@@ -1,0 +1,41 @@
+<div class="row entity">
+    <div class="col-lg-4">
+        <div class="ibox float-e-margins panel panel-info">
+            <div class="ibox-title panel-heading">
+                <h5>Evidence 1 (11101029.txt)</h5>
+
+                <div ibox-tools></div>
+            </div>
+            <div class="ibox-content">
+                <div class="panel-body">
+                    <div class="panel-group">
+
+                        <label class="checkbox">
+                            <input type="checkbox" ng-model="oneAtATime">
+                            Open only one at a time
+                        </label>
+                        <accordion close-others="oneAtATime">
+                            <accordion-group heading="Static Header, initially expanded" is-open="status.isFirstOpen" is-disabled="status.isFirstDisabled">
+                                This content is straight in the template.
+                            </accordion-group>
+                            <accordion-group heading="{{group.title}}" ng-repeat="group in main.groups">
+                                {{group.content}}
+                            </accordion-group>
+                            <accordion-group heading="Dynamic Body Content">
+                                <p>The body of the accordion group grows to fit the contents</p>
+                            </accordion-group>
+                            <accordion-group is-open="status.open">
+                                <accordion-heading>
+                                    I can have markup, too! <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+                                </accordion-heading>
+                                This is just some content to illustrate fancy headings.
+                            </accordion-group>
+                        </accordion>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

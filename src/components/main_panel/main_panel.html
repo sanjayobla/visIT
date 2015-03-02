@@ -1,0 +1,41 @@
+<div class="panel panel-default main-panel">
+    <!-- <div class="panel-heading">
+        Default Panel
+    </div> -->
+    <div class="panel-body">
+        <div class="panel blank-panel ui-tab">
+
+                    <!-- <div class="panel-heading">
+                        <div class="panel-title m-b-md"><h4>Blank Panel with text tabs</h4></div>
+                    </div> -->
+
+                    <div class="panel-body">
+                        <tabset>
+                            <tab heading="Entity Browser">
+                                <div ng-include="'components/main_panel/evidence_browser.html'"></div>
+                            </tab>
+                            <tab heading="Provenance Timeline" ng-controller="timelineCtrl">
+                                <angularchart
+                                    dataset="dataset"
+                                    schema="schema"
+                                    options="options">
+                                  </angularchart>
+                            </tab>
+                            <tab heading="Story Teller">
+                                <strong>Donec quam felis</strong>
+
+                                <p>Thousand unknown plants are noticed by me: when I hear the buzz of the little world among the stalks, and grow familiar with the countless indescribable forms of the insects
+                                    and flies, then I feel the presence of the Almighty, who formed us in his own image, and the breath </p>
+
+                                <p>I am alone, and feel the charm of existence in this spot, which was created for the bliss of souls like mine. I am so happy, my dear friend, so absorbed in the exquisite
+                                    sense of mere tranquil existence, that I neglect my talents. I should be incapable of drawing a single stroke at the present moment; and yet.</p>
+
+                            </tab>
+                        </tabset>
+
+                    </div>
+
+                </div>
+    </div>
+
+</div>
