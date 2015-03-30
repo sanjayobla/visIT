@@ -1,6 +1,8 @@
 'use strict';
 
-angular.module('inspinia', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngResource', 'ui.router', 'ui.bootstrap', 'ui.tree', 'isteven-multi-select', 'angularChart'])
+angular.module('inspinia', ['ngAnimate', 
+    'ngCookies', 'ngTouch', 'ngSanitize', 'ngResource', 'ui.router', 'ui.bootstrap', 'ui.tree', 'isteven-multi-select', 'angularChart',
+    'sf.virtualScroll','pasvaz.bindonce'])
   .config(function ($stateProvider, $urlRouterProvider) {
     $stateProvider
 
