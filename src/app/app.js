@@ -2,7 +2,7 @@
 
 angular.module('inspinia', ['ngAnimate', 
     'ngCookies', 'ngTouch', 'ngSanitize', 'ngResource', 'ui.router', 'ui.bootstrap', 'ui.tree', 'isteven-multi-select', 'angularChart',
-    'sf.virtualScroll','pasvaz.bindonce'])
+    'sf.virtualScroll','pasvaz.bindonce', 'zyngaScroller', 'achAngular'])
   .config(function ($stateProvider, $urlRouterProvider) {
     $stateProvider
 

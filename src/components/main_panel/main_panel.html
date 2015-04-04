@@ -12,7 +12,7 @@
                     <div class="panel-body">
                         <tabset>
                             <tab heading="Entity Browser">
-                                <div ng-include="'components/main_panel/evidence_browser.html'"></div>
+                                <div infinite-canvas id="container" ng-include="'components/main_panel/evidence_browser.html'"></div>
                             </tab>
                             <tab heading="Provenance Timeline" ng-controller="timelineCtrl">
                                 <angularchart
