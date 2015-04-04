@@ -5,21 +5,17 @@ angular.module('achAngular', [])
 				return {
 					restrict: 'EA',
 					priority: 0,
+					// scope: {
+					// 	data: "=",
+					// 	// callback: "&"
+					// },
 					link: function(scope, el, attrs){
-						var hypo = {
-						  positive: {
-						    data: ["Evidence 1", "Evidence 2"]
-						  },
-						  negative: {
-						    data: ["Evidence 3", "Evidence 4"]
-						  },
-						  neutral: {
-						    data: ["Evidence 5", "Evidence 6"]
-						  }
-						};
 						var hBox = d3Components.hypothesisBox().number(+attrs.hypothesisBox);
 						// console.log(d3.selectAll(el));
-						var box = d3.selectAll(el).data([hypo]).call(hBox);
+						scope.$watch('hypothesis', function(o, n){
+							console.log(o, n);
+							var box = d3.selectAll(el).data([scope.hypothesis]).call(hBox);
+						}, true);
 					}
 				}
 			})
@@ -27,7 +23,7 @@ angular.module('achAngular', [])
 				return {
 					restrict: 'EA',
 					link: function(scope, el, attrs){
-						var eBox = d3Components.evidenceBox().number(+attrs.evidenceBox);
+						var eBox = d3Components.evidenceBox().number(+attrs.evidenceBox).evidences(scope.evidence.data);
 						var box = d3.selectAll(el).call(eBox);
 					}
 				}
@@ -36,6 +32,9 @@ angular.module('achAngular', [])
 				return {
 					restrict: 'A',
 					priority: 10,
+					// scope: {
+					// 	callback: "&"
+					// },
 					link: function(scope, el, attrs){
 						// if(attrs.id !== 'yes-drop'){
 						var drag = interact(el[0]).draggable({
@@ -70,22 +69,25 @@ angular.module('achAngular', [])
 						    }
 						  });
 					// }
-					if(attrs.id !== 'yes-drop'){
-						drag.allowFrom('.panel-heading').on('dragstart', function(event) {
-					    var base, base1;
-					    console.log(event);
-					    (base = event.target).originalPosX || (base.originalPosX = event.pageX);
-					    return (base1 = event.target).originalPosY || (base1.originalPosY = event.pageY);
-					  });
-					}
-					else {
-						drag.on('dragstart', function(event) {
-					    var base, base1;
-					    console.log(event);
-					    (base = event.target).originalPosX || (base.originalPosX = event.pageX);
-					    return (base1 = event.target).originalPosY || (base1.originalPosY = event.pageY);
-					  });
-					}
+						if(attrs.id !== 'yes-drop'){
+							drag.allowFrom('.panel-heading').on('dragstart', function(event) {
+						    var base, base1;
+						    // console.log(event);
+						    event.target.style.zIndex = 999;
+						    (base = event.target).originalPosX || (base.originalPosX = event.pageX);
+						    return (base1 = event.target).originalPosY || (base1.originalPosY = event.pageY);
+						  });
+						}
+						else {
+							drag.on('dragstart', function(event) {
+						    var base, base1;
+						    // console.log(event);
+						    event.target.style.zIndex = 999;
+						    (base = event.target).originalPosX || (base.originalPosX = event.pageX);
+						    return (base1 = event.target).originalPosY || (base1.originalPosY = event.pageY);
+						  });
+						}
+						drag.on('dragend', function(event){event.target.style.zIndex--;})
 
 						if(attrs.hypothesisBox){
 							interact("[data-box-type='pnn']").dropzone({
@@ -111,11 +113,11 @@ angular.module('achAngular', [])
 							      var box, data, x, y, zoom;
 							      event.target.classList.add(event.relatedTarget.getAttribute('entity-name'));
 							      event.relatedTarget.classList.add('Dropped');
-							      box = d3.select(event.target).selectAll('div.evidence');
-							      data = box.data();
-							      data.push('Evidence 20');
-							      console.log(box, data);
-							      console.log(event.interaction);
+							      // box = d3.select(event.target).selectAll('div.evidence');
+							      // data = box.data();
+							      // data.push('Evidence 20');
+							      // console.log(box, data);
+							      // console.log(event.interaction);
 							      x = event.interaction.startCoords.client.x - event.relatedTarget.originalPosX;
 							      y = event.interaction.startCoords.client.y - event.relatedTarget.originalPosY;
 							      zoom = scroller.getValues().zoom;
@@ -124,7 +126,11 @@ angular.module('achAngular', [])
 							      scroller.zoomTo(zoom);
 							      event.relatedTarget.setAttribute('data-x', x);
 							      event.relatedTarget.setAttribute('data-y', y);
-							      return alert("Dropped " + (event.relatedTarget.getAttribute('data-box-type')) + " in " + (event.target.getAttribute('data-box-category')) + " under Hypothesis" + (event.target.getAttribute('data-parent-box')));
+							      var eviScope = angular.element(event.relatedTarget).scope();
+							      console.log(eviScope);
+							      scope.addEvidence(eviScope.evidence, event.target.getAttribute('data-box-category').toLowerCase());
+							      // console.log(scope);
+							      // return alert("Dropped " + (event.relatedTarget.getAttribute('data-box-type')) + " in " + (event.target.getAttribute('data-box-category')) + " under Hypothesis" + (event.target.getAttribute('data-parent-box')));
 							    },
 							    ondropdeactivate: function(event) {
 							      event.target.classList.remove('drop-active');

@@ -1,6 +1,6 @@
-<div id="content">
-<div hypothesis-box="2" interact="dnd"></div>
-<div evidence-box="0" interact="dnd"></div>
+<div id="content" ng-controller="achCtrl as ach">
+<div ng-repeat="hypothesis in hypotheses" hypothesis-box="2" interact="dnd" data="hypothesis" callback="dataChange()" ng-controller="hypothesisCtrl as hp"></div>
+<div ng-repeat="evidence in evidences" evidence-box="0" interact="dnd" data="evidence"></div>
 <div id="yes-drop" interact="drag" class="entity drag-drop" data-type="entity" entity-name="pranav" style="width: 100px;text-align: center; background-color: yellow;position: absolute;left:500px;">#pranav</div>
     <!-- <div class="col-lg-4">
         <div class="ibox float-e-margins panel panel-info">
