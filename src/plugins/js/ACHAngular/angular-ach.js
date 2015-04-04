@@ -127,7 +127,7 @@ angular.module('achAngular', [])
 							      event.relatedTarget.setAttribute('data-x', x);
 							      event.relatedTarget.setAttribute('data-y', y);
 							      var eviScope = angular.element(event.relatedTarget).scope();
-							      console.log(eviScope);
+							      // console.log(eviScope);
 							      scope.addEvidence(eviScope.evidence, event.target.getAttribute('data-box-category').toLowerCase());
 							      // console.log(scope);
 							      // return alert("Dropped " + (event.relatedTarget.getAttribute('data-box-type')) + " in " + (event.target.getAttribute('data-box-category')) + " under Hypothesis" + (event.target.getAttribute('data-parent-box')));

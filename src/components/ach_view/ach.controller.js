@@ -48,8 +48,12 @@ function hypothesisCtrl($scope){
 		console.log(arguments);
 	}
 }
+function evidenceCtrl($scope){
+	console.log('Evidence');
+}
 
 angular
 	.module('inspinia')
 	.controller('achCtrl', achCtrl)
 	.controller('hypothesisCtrl', hypothesisCtrl)
+	.controller('evidenceCtrl', evidenceCtrl)
