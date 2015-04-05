@@ -10,7 +10,9 @@ angular.module('achAngular', [])
 					// 	// callback: "&"
 					// },
 					link: function(scope, el, attrs){
-						var hBox = d3Components.hypothesisBox().number(+attrs.hypothesisBox);
+						var hBox = d3Components.hypothesisBox()
+													.number(+attrs.hypothesisBox)
+													.removeEvidenceCb(scope.removeEvidence);
 						// console.log(d3.selectAll(el));
 						scope.$watch('hypothesis', function(o, n){
 							console.log(o, n);
@@ -23,7 +25,11 @@ angular.module('achAngular', [])
 				return {
 					restrict: 'EA',
 					link: function(scope, el, attrs){
-						var eBox = d3Components.evidenceBox().number(+attrs.evidenceBox).evidences(scope.evidence.data);
+						var eBox = d3Components.evidenceBox()
+												.number(+attrs.evidenceBox)
+												.evidences(scope.evidence.data)
+												.addToHypothesisCb(scope.addToHypothesis);
+
 						var box = d3.selectAll(el).call(eBox);
 					}
 				}

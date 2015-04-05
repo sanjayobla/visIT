@@ -46,7 +46,7 @@ ACHBar = require('./ACHBar');
 window.d3Components || (window.d3Components = {});
 
 d3Components.hypothesisBox = function() {
-  var chart, headingButtons, height, hideBody, hideDivStyle, hypothesis, label, number, showDivStyle, title, width;
+  var chart, headingButtons, height, hideBody, hideDivStyle, hypothesis, label, number, removeEvidenceCb, showDivStyle, title, width;
   width = 400;
   height = 400;
   number = 0;
@@ -68,6 +68,7 @@ d3Components.hypothesisBox = function() {
   };
   label = 5;
   hideBody = false;
+  removeEvidenceCb = function() {};
   chart = function(selection) {
     return selection.each(function(data) {
       var mainDiv;
@@ -120,7 +121,7 @@ d3Components.hypothesisBox = function() {
       'margin': '0px 5px'
     });
     return headingButtons.label = heading.append('span').attr('class', 'label label-danger pull-right').style({
-      'margin': '0px 5px'
+      'margin': '-1px 5px'
     }).text(label);
   };
   chart.initBody = function(selection) {
@@ -134,10 +135,10 @@ d3Components.hypothesisBox = function() {
   chart.initPNNBoxes = function(selection) {
     return selection.each(function(data) {
       var negativeBox, negativeDiv, neutralBox, neutralDiv, positiveBox, positiveDiv, sel;
-      hypothesis = data;
-      positiveBox = pnnBox().title('Positive').titleClass('panel-info').parentBox(number);
-      negativeBox = pnnBox().title('Negative').titleClass('panel-danger').parentBox(number);
-      neutralBox = pnnBox().title('Neutral').titleClass('panel-warning').parentBox(number);
+      hypothesis = data.data;
+      positiveBox = pnnBox().title('Positive').titleClass('panel-info').parentBox(number).removeEvidenceCb(removeEvidenceCb);
+      negativeBox = pnnBox().title('Negative').titleClass('panel-danger').parentBox(number).removeEvidenceCb(removeEvidenceCb);
+      neutralBox = pnnBox().title('Neutral').titleClass('panel-warning').parentBox(number).removeEvidenceCb(removeEvidenceCb);
       sel = d3.select(this);
       positiveDiv = sel.select('.pnn.panel-info');
       if (positiveDiv.empty()) {
@@ -157,13 +158,15 @@ d3Components.hypothesisBox = function() {
     });
   };
   chart.initBottomBar = function(selection) {
-    var achBottomBar, bottomBar;
-    achBottomBar = ACHBar();
-    bottomBar = selection.select('.ach-bar');
-    if (bottomBar.empty()) {
-      bottomBar = selection.append('div');
-    }
-    return bottomBar.datum([10, 4, 2]).attr('class', 'ach-bar').style(hideDivStyle).call(achBottomBar);
+    return selection.each(function(data) {
+      var achBottomBar, bottomBar;
+      achBottomBar = ACHBar();
+      bottomBar = selection.select('.ach-bar');
+      if (bottomBar.empty()) {
+        bottomBar = selection.append('div');
+      }
+      return bottomBar.datum(data.overallWeights).attr('class', 'ach-bar').style(hideDivStyle).call(achBottomBar);
+    });
   };
   chart.width = function(value) {
     if (!arguments.length) {
@@ -207,6 +210,13 @@ d3Components.hypothesisBox = function() {
     number = value;
     return chart;
   };
+  chart.removeEvidenceCb = function(accessorFunc) {
+    if (!arguments.length) {
+      return removeEvidenceCb;
+    }
+    removeEvidenceCb = accessorFunc;
+    return chart;
+  };
   return chart;
 };
 
@@ -216,7 +226,7 @@ module.exports = d3Components.hypothesisBox;
 var pnnBox;
 
 pnnBox = function() {
-  var appendPlusMinus, appendTrash, chart, headingButtons, height, label, parentBox, removeItems, title, titleClass, width;
+  var appendPlusMinus, appendTrash, chart, headingButtons, height, label, parentBox, removeEvidenceCb, removeItems, title, titleClass, width;
   width = 200;
   height = 200;
   title = 'Positive';
@@ -229,13 +239,15 @@ pnnBox = function() {
     lineChart: null
   };
   label = 5;
+  removeEvidenceCb = function() {};
   removeItems = function(d, i) {
     var data, mainDiv;
     mainDiv = d3.select(this.parentNode.parentNode.parentNode);
     data = mainDiv.data()[0];
     data.splice(i, 1);
     label--;
-    return mainDiv.call(chart);
+    mainDiv.call(chart);
+    return removeEvidenceCb(d, i, title.toLowerCase());
   };
   appendPlusMinus = function(selection) {
     selection.append('i').attr('class', 'fa fa-minus pull-right').style({
@@ -348,6 +360,13 @@ pnnBox = function() {
     titleClass = value;
     return chart;
   };
+  chart.removeEvidenceCb = function(accessorFunc) {
+    if (!arguments.length) {
+      return removeEvidenceCb;
+    }
+    removeEvidenceCb = accessorFunc;
+    return chart;
+  };
   return chart;
 };
 
@@ -359,7 +378,7 @@ module.exports = pnnBox;
 window.d3Components || (window.d3Components = {});
 
 d3Components.evidenceBox = function() {
-  var addPopoutHypothesisList, chart, evidences, headingButtons, height, hideBody, hideDivStyle, label, layers, number, showDivStyle, title, width;
+  var addPopoutHypothesisList, addToHypothesisCb, chart, evidences, headingButtons, height, hideBody, hideDivStyle, label, layers, number, showDivStyle, title, width;
   width = 250;
   height = 300;
   number = 0;
@@ -394,6 +413,7 @@ d3Components.evidenceBox = function() {
   };
   label = 4;
   hideBody = false;
+  addToHypothesisCb = function() {};
   chart = function(selection) {
     return selection.each(function(data) {
       layers.mainDiv = d3.select(this).attr({
@@ -436,6 +456,8 @@ d3Components.evidenceBox = function() {
         padding: '5px 1em'
       }).text(function(d) {
         return "Hypothesis " + d;
+      }).on('click', function(d, i) {
+        return addToHypothesisCb(d, i);
       });
       return popUp.style(showHideObj);
     });
@@ -469,7 +491,7 @@ d3Components.evidenceBox = function() {
       return addPopoutHypothesisList(d3.select(this.parentNode.parentNode));
     });
     return headingButtons.label = heading.append('span').attr('class', 'label label-danger pull-right').style({
-      'margin-top': '0px'
+      'margin-top': '-1px'
     }).text(label);
   };
   chart.initBody = function(selection) {
@@ -540,6 +562,13 @@ d3Components.evidenceBox = function() {
       return number;
     }
     number = value;
+    return chart;
+  };
+  chart.addToHypothesisCb = function(accessorFunc) {
+    if (!arguments.length) {
+      return addToHypothesisCb;
+    }
+    addToHypothesisCb = accessorFunc;
     return chart;
   };
   return chart;
