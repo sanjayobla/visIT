@@ -37,10 +37,6 @@ angular.module('inspinia')
 			ListDataFactory.updateMode(newMode);
 		}
 
-		$scope.$on('entityTypesLoaded', function(){
-			$scope.isLoading = false;
-		});
-
 		/** Private Methods **/ 
 
 		function loadRemoteData(){
@@ -60,11 +56,12 @@ angular.module('inspinia')
 		});
 
 		$scope.$on('entityTypesLoaded', function(){
+			$scope.isLoading = false;
 			console.log("entityTypesLoaded called..");
 			$scope.headers = ListDataFactory.getListEntityTypes();
-			if(!$scope.isListLoadedOnce && $scope.list_index < 4){
+			if(!$scope.isListLoadedOnce){
 				$scope.isListLoadedOnce = true;
-				$scope.selectedList = $scope.headers[$scope.list_index - 1];
+				$scope.selectedList = $scope.headers[1];
 				$scope.listChanged();
 			}
 		});
@@ -95,6 +92,77 @@ angular.module('inspinia')
 			$scope.listData = []
 			var _newData = $filter('orderBy')($scope.data, [$scope.firstOrderPredicate, $scope.orderByPredicate])
 			$scope.listData.push.apply($scope.listData, _newData);
+		}
+
+		$scope.setAlignment = function(align){
+			$scope.align = align;
+		}
+
+		$scope.selectItem = function(itemName, $event, $index){
+			$scope.isListLoading = true;
+			// if(!notification){
+			// 	notification = noty({});
+			// }
+
+			if($event){
+				//$event is not undefined..
+				if($event.shiftKey){
+					$scope.selectedListItems = [];
+					if($scope.lastMultiSelectPosition){
+						//lastMultiSelectPosition is not undefined..
+						var startIndex = ($index < $scope.lastMultiSelectPosition)? $index : $scope.lastMultiSelectPosition;
+						var endIndex = ($index > $scope.lastMultiSelectPosition)? $index : $scope.lastMultiSelectPosition;
+
+						for(var index=startIndex; index<=endIndex; index++){
+							$scope.selectedListItems.push($scope.listData[index]['name']);
+						}
+					} else {
+						$scope.selectedListItems.push(itemName);
+						// $scope.lastMultiSelectPosition = $index;
+					}
+				} else if(($event.metaKey && navigator.platform.indexOf('Mac') > -1) || ($event.ctrlKey && navigator.platform.indexOf('Win') > -1)){
+					var index = $scope.selectedListItems.indexOf(itemName);
+					if(index != -1){
+						$scope.selectedListItems.splice(index, 1);
+					} else{
+						$scope.selectedListItems.push(itemName);
+					}
+				} else {
+					$scope.selectedListItems = [];
+					$scope.selectedListItems.push(itemName);
+					// $scope.lastMultiSelectPosition = $index;
+				}
+
+			} else {
+				//$event is undefined..
+				var index = $scope.selectedListItems.indexOf(itemName);
+				if(index != -1){
+					$scope.selectedListItems.splice(index, 1);
+				} else{
+					$scope.selectedListItems = [];
+					$scope.selectedListItems.push(itemName);
+				}
+			}
+
+			$scope.lastMultiSelectPosition = $index;
+			ListDataFactory.setSelectedListItem($scope.selectedList, $scope.selectedListItems);
+			$scope.isMultiSelectMode = false;
+		}
+
+		$scope.$watch('orderByPredicate', function(newValue, oldValue){
+			resetDisplayList();
+			$scope.dataWatchFlag++;
+		});
+
+		$scope.setFirstOrderSort = function(sortParams){
+			if($scope.firstOrderPredicate == sortParams){
+				$scope.firstOrderPredicate = "";
+			} else{
+				$scope.firstOrderPredicate = sortParams;
+			}
+
+			resetDisplayList();
+			$scope.dataWatchFlag++;
 		}
 
 		$scope.getSortedData = function(){

@@ -5,6 +5,10 @@ angular.module('inspinia')
 		var listContents = [];
 		var listEntityTypes = [];
 		var selectedLists = [];
+		var currentlyDisplayedLists = [];
+
+		var currentSelection = "#FEF935";
+		var seedSelectionColorSwatch = ["#ffdc8c", '#ffd278','#ffc864','#ffbe50','#ffb43c','#ffaa28','#ffa014','#ff9600'];
 
 		var service = {};
 

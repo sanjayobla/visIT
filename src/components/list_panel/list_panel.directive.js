@@ -2,8 +2,8 @@ angular.module('inspinia')
 	.directive('listView', function($window, $parse){
 		return ({
 			restrict: "A",
-			templateUrl: "components/list_panel/list_view.html"/*,
-			controller: 'ListController',
+			templateUrl: "components/list_panel/list_view.html",
+			controller: "ListController",
 			compile: function(element, attrs){
 				return {
 					pre:  function($scope, element, attrs){
@@ -66,6 +66,6 @@ angular.module('inspinia')
 						}
 		 			}
 				}
-			}*/
+			}
 		});
 	});
