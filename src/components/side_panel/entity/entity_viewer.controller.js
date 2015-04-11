@@ -1,7 +1,7 @@
 'use strict';
 
 function entityViewerCtrl($scope){
-	$scope.radioModel = 'Selected';
+	$scope.radioModel = 'All';
 	$scope.information = [
 		'----------',
 		'----------',

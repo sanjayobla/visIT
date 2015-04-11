@@ -1,0 +1,93 @@
+<div class="doc-panel" ng-controller="DocumentController">
+	<div class="row">
+
+		<div class="col-xs-6 col-md-3 col-lg-3">
+			<div class="panel panel-default margin-bottom-0">
+				<div class="panel-heading doc-panel-heading">
+					<div class="row">
+						<div class="col-xs-6 col-xs-offset-5 padding-top-5 padding-bottom-2 padding-left-25">
+							<div class="btn-group">
+								<button type="button" class="btn btn-default btn-xs js-tooltip js-sort-alphabetically" data-toggle="tooltip" data-placement="top" title="Sort list alphabetically" ng-click="orderByPredicate='name';" ng-class="{true:'active', false:''}[orderByPredicate=='name']">
+									<span class="glyphicon glyphicon-sort-by-alphabet"></span>
+								</button>
+								<button type="button" class="btn btn-default btn-xs js-tooltip js-sort-by-date" data-toggle="tooltip" data-placement="top" title="Sort list by date" ng-click="orderByPredicate='-date';" ng-class="{true:'active', false:''}[orderByPredicate=='-date']">
+									<span class="glyphicon glyphicon-calendar"></span>
+								</button>
+								<button type="button" class="btn btn-default btn-xs js-tooltip js-sort-by-view-count" data-toggle="tooltip" data-placement="top" title="Sort list by view count"  ng-click="orderByPredicate='-count';" ng-class="{true:'active', false:''}[orderByPredicate=='-count']">
+									<span class="glyphicon glyphicon-eye-open"></span>
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="panel-body padding-3">
+					<div class="js-items-list viewport real restrict" style="overflow-x: hidden; overflow-y: auto; max-height: 250px;">
+						<ul class="doc-list">
+							<li class="row" sf-virtual-repeat="doc in documentList | orderBy:orderByPredicate" ng-click="loadDocument(doc.name)" ng-style="{'background-color': doc.color};">
+								<div class="col-xs-2" title="{{doc.count}}">{{doc.count}}</div>
+								<div class="col-xs-10 padding-right-25 ellipsize">{{doc.name}}</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-xs-12 col-md-9 col-lg-9">
+			<div class="panel panel-default margin-bottom-0">
+				<div class="panel-heading doc-panel-heading" style="height: 43px;">
+					<!-- <div class="row" style="margin-top: -2px;">
+						<div class="col-sm-6 padding-left-35">
+							<form class="form-inline">
+								<div class="form-group">
+									<select class="form-control" id="entitySelector" ng-options="obj as obj for obj in entityTypes" ng-model="selectedEntity"></select>
+								</div>
+								<input type="text" class="hidden" ng-model="selectedText" id="selectedText"/>
+								<button type="submit" class="btn btn-default" ng-click="addEntity()">Add</button>
+							</form>
+						</div>
+						<div class="col-sm-6 padding-left-0">
+							<form class="form-inline">
+								<div class="form-group">
+									<input type="text" class="form-control" ng-model="entityName" id="entityName" placeholder="New Entity Type"/>
+								</div>
+								<button type="submit" class="btn btn-default" ng-click="createEntity()">Create</button>
+							</form>
+						</div>
+					</div> -->
+				</div>
+				<div class="panel-body padding-3" style="height: 255px; overflow-x: hidden; overflow-y: auto;">
+					<!-- Document content to be rendered here. -->
+					<div class="bs-summary padding-top-45">
+						<p ng-repeat="line_summary in summary">{{line_summary}}</p>
+					</div>
+
+					<div class="bs-content divide padding-top-45" id="textContent">
+						<p ng-repeat="line in content" ng-bind-html="line"></p>
+					</div>
+					
+					<!-- List group -->
+					<div class="bs-entities divide">
+						<ul class="list-group">
+							<li class="list-group-item">
+								<ul class="list-unstyled">
+									<li ng-repeat="column in entity_columns">
+										<div class="row" ng-if="entities[column]">
+											<div class="col-md-3"><h5><span class="label {{column}}">{{column}}</span></h5></div>
+											<div class="col-md-9">
+												<p style="margin-top: 10px" ng-bind="entities[column].join(', ')"></p>
+											</div>
+										</div>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+
+
+				</div>
+			</div>
+		</div>
+
+	</div>
+</div>
