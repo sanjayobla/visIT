@@ -60,6 +60,7 @@ angular.module('inspinia')
 		});
 
 		$scope.$on('entityTypesLoaded', function(){
+			console.log("entityTypesLoaded called..");
 			$scope.headers = ListDataFactory.getListEntityTypes();
 			if(!$scope.isListLoadedOnce && $scope.list_index < 4){
 				$scope.isListLoadedOnce = true;
