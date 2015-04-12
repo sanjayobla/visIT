@@ -23,7 +23,21 @@ gulp.task('inject', ['styles'], function () {
 
   var injectOptions = {
     ignorePath: [paths.src, paths.tmp + '/serve'],
-    addRootSlash: false
+    addRootSlash: false,
+  };
+
+  var injectOptionsFlask = {
+    ignorePath: [paths.src, paths.tmp + '/serve'],
+    addRootSlash: false,
+    transform: function(filePath){
+      if (filePath.slice(-3) === '.js') {
+        return '<script src="../' + filePath + '">'+'</script>';
+      }
+      else if(filePath.slice(-4) === '.css'){
+        return '<link rel="stylesheet" href="../'+filePath+'"/>';
+      }
+      return $.inject.transform.apply($.inject.transform, arguments);
+    }
   };
 
   var wiredepOptions = {
@@ -31,12 +45,17 @@ gulp.task('inject', ['styles'], function () {
     exclude: [/bootstrap\.js/, /bootstrap\.css/, /bootstrap\.css/, /foundation\.css/]
   };
 
+  gulp.src([paths.src + '/*.html', '!' + paths.src + '/index_serve.html'])
+    .pipe($.inject(injectStyles, injectOptionsFlask))
+    .pipe($.inject(injectScripts, injectOptionsFlask))
+    .pipe(wiredep(wiredepOptions))
+    .pipe(rename("index_serve.html"))
+    .pipe(gulp.dest(paths.src));
+
   return gulp.src([paths.src + '/*.html', '!' + paths.src + '/index_serve.html'])
     .pipe($.inject(injectStyles, injectOptions))
     .pipe($.inject(injectScripts, injectOptions))
     .pipe(wiredep(wiredepOptions))
     .pipe(gulp.dest(paths.tmp + '/serve'))
-    .pipe(rename("index_serve.html"))
-    .pipe(gulp.dest(paths.src));
 
 });

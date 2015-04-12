@@ -1,36 +1,17 @@
-function achCtrl($scope){
-	$scope.hypotheses = [
-		{
-			overallWeights: [5, 7, 3],
-			data: {
-				positive: {
-				  data: ["Evidence 11", "Evidence 2"]
-				},
-				negative: {
-				  data: ["Evidence 3", "Evidence 4"]
-				},
-				neutral: {
-				  data: ["Evidence 5", "Evidence 6"]
-				}
-			}
-		}
-	]
-
-	$scope.evidences = [
-		{
-			title:'Evidence 1 (110203.txt)',
-			data: [{
-				name:'Anand',
-				type: 'label-success'
-				}, {
-				name: 'GT',
-				type: 'label-info'
-				},{
-				name: '2011',
-				type: 'label-warning'
-			}]
-		}
-	];
+function achCtrl($scope, $rootScope, HypothesesFactory, EvidencesFactory, EntityFactory){
+	console.log(HypothesesFactory)
+	$scope.hypotheses = HypothesesFactory.getData();
+	// window.scope = $scope;
+	$scope.evidences = EvidencesFactory.getData();
+	$scope.entities = EntityFactory.getData();
+	/*$rootScope.$on('addEvidenceBox', function(event, args) {
+		console.log('received evidence')
+		$scope.evidences.push(args);
+	});*/
+	/*$rootScope.$on('addHypothesisBox', function(event, args) {
+		console.log('received hypothesis')
+		// $scope.hypotheses = data;
+	});*/
 }
 
 function hypothesisCtrl($scope){
@@ -54,6 +35,12 @@ function hypothesisCtrl($scope){
 function evidenceCtrl($scope){
 	$scope.addToHypothesis = function(d,i){
 		console.log("ADD TO HYPO", $scope.evidence, d);
+	}
+	$scope.addEntity = function(data){
+		$scope.$apply(function(){
+			$scope.evidence.data.push(data);
+			// console.log($scope.evidences);
+		});
 	}
 }
 

@@ -1,4 +1,4 @@
-function evidenceBrowserCtrl($scope) {
+function evidenceBrowserCtrl($rootScope, $scope, EvidencesFactory) {
     $scope.remove = function(scope) {
         scope.remove();
     };
@@ -23,7 +23,45 @@ function evidenceBrowserCtrl($scope) {
     $scope.expandAll = function() {
         $scope.$broadcast('expandAll');
     };
-    $scope.data = [{
+
+    function transformEvidence(evidence){
+      var temp = {};
+      temp.title = evidence.title;
+      var groupByCategories =  _.groupBy(evidence.data, function(n) {
+                                    return n.category;
+                                  });
+      groupByCategories = _.pairs(groupByCategories);
+      groupByCategories = _.map(groupByCategories, function(d){
+          var temp = {};
+          temp.title = d[0];
+          temp.nodes = [];
+          _.forEach(d[1], function(node){
+              temp.nodes.push({
+                  title: node.name,
+                  nodes: []
+              })
+          })
+          return temp;
+      });
+
+      temp.nodes = groupByCategories;
+      return temp;
+    }
+    function transformEvidences(){
+        var evidences = EvidencesFactory.getData();
+
+        evidences = _.map(evidences, transformEvidence)
+
+        return evidences;
+
+    }
+
+    $rootScope.$on('evidences:added', function(event, n){
+        // console.log(n, transformEvidence(n))
+        $scope.data.push(transformEvidence(n));
+    })
+    $scope.data = transformEvidences();
+    /*$scope.data = [{
         "id": 1,
         "title": "Evidence 1 (1025795.txt)",
         "nodes": [
@@ -69,7 +107,7 @@ function evidenceBrowserCtrl($scope) {
                 "nodes": []
             }
         ],
-    }];
+    }];*/
 }
 
 angular

@@ -67,8 +67,7 @@ angular.module('zyngaScroller', [])
 								if (e.target.tagName.match(/input|textarea|select/i)) {
 									return;
 								}
-								
-								if(e.target.className === 'panel-heading' || e.target.id === 'yes-drop') return;
+								if(angular.element(e.target).hasClass('panel-heading') || angular.element(e.target).hasClass('entity')) return;
 
 								scroller.doTouchStart([{
 									pageX: e.pageX,

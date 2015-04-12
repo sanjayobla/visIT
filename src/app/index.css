@@ -4996,6 +4996,18 @@ nav .navbar-form-custom .form-control {
 nav .navbar-form-custom .form-group {
   padding-top: 6px;
 }
-.main-panel .entity .ibox-title .ibox-tools a {
-  color: white;
+.main-panel .panel-body .add {
+  position: absolute;
+  right: 45px;
+  top: 45px;
+  z-index: 99;
+}
+.main-panel .panel-body .add .dropdown-menu {
+  left: -95px;
+}
+.main-panel .panel-body .ach-search {
+  position: absolute;
+  right: 145px;
+  top: 45px;
+  z-index: 99;
 }

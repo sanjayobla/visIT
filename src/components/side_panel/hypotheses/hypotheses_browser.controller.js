@@ -1,4 +1,4 @@
-function hypothesesBrowserCtrl($scope) {
+function hypothesesBrowserCtrl($rootScope, $scope, HypothesesFactory) {
     $scope.remove = function(scope) {
         scope.remove();
     };
@@ -23,7 +23,51 @@ function hypothesesBrowserCtrl($scope) {
     $scope.expandAll = function() {
         $scope.$broadcast('expandAll');
     };
-    $scope.data = [{
+
+    function transformHypothesis(hypothesis){
+        var temp = {};
+        temp.title = hypothesis.title;
+        temp.nodes = [{
+            title: 'Positive',
+            nodes: _.map(hypothesis.data.positive.data, function(evidence){
+                return {
+                    title: evidence,
+                    nodes: []
+                }
+            })
+        },{
+            title: 'Negative',
+            nodes: _.map(hypothesis.data.negative.data, function(evidence){
+                return {
+                    title: evidence,
+                    nodes: []
+                }
+            })
+        },{
+            title: 'Neutral',
+            nodes: _.map(hypothesis.data.neutral.data, function(evidence){
+                return {
+                    title: evidence,
+                    nodes: []
+                }
+            })
+        }]
+        return temp;
+    }
+    function transformHypotheses(){
+        var hypotheses = HypothesesFactory.getData();
+        console.log(hypotheses);
+        hypotheses = _.map(hypotheses, transformHypothesis);
+        return hypotheses;
+    }
+
+    // console.log(transformHypotheses());
+    $rootScope.$on('hypothesis:added', function(event, n){
+        // console.log(n, transformHypothesis(n))
+        $scope.data.push(transformHypothesis(n));
+    })
+    $scope.data = transformHypotheses();
+    /*$scope.data = [{
         "id": 1,
         "title": "Hypothesis 1",
         "nodes": [
@@ -63,7 +107,7 @@ function hypothesesBrowserCtrl($scope) {
                 "nodes": []
             }
         ],
-    }];
+    }];*/
 }
 
 angular

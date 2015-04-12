@@ -99,6 +99,9 @@ d3Components.hypothesisBox = function() {
       });
     }
     heading.text(title);
+    heading.on('dblclick', function(d) {
+      return console.log('double click', d);
+    });
     headingButtons.chevron = heading.append('i').attr('class', 'fa fa-chevron-up pull-right').style({
       'margin-top': '0px'
     }).on('click', function(d) {
@@ -245,7 +248,6 @@ pnnBox = function() {
     mainDiv = d3.select(this.parentNode.parentNode.parentNode);
     data = mainDiv.data()[0];
     data.splice(i, 1);
-    label--;
     mainDiv.call(chart);
     return removeEvidenceCb(d, i, title.toLowerCase());
   };
@@ -290,10 +292,7 @@ pnnBox = function() {
         'padding-bottom': 0
       });
     }
-    heading.text(title);
-    return headingButtons.label = heading.append('span').attr('class', 'label label-default pull-right').text(label).style({
-      'margin': '0px 5px'
-    });
+    return heading.text(title);
   };
   chart.initBody = function(selection) {
     var body;
@@ -427,7 +426,7 @@ d3Components.evidenceBox = function() {
       layers.mainDiv.data([data]);
       layers.mainDiv.call(chart.initHeading);
       layers.mainDiv.call(chart.initBody);
-      return layers.mainDiv.call(addPopoutHypothesisList);
+      return layers.mainDiv.call(addPopoutHypothesisList, true);
     });
   };
   addPopoutHypothesisList = function(selection, hideList) {

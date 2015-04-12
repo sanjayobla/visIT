@@ -12,6 +12,7 @@ angular.module('achAngular', [])
 					link: function(scope, el, attrs){
 						var hBox = d3Components.hypothesisBox()
 													.number(+attrs.hypothesisBox)
+													.title(scope.hypothesis.title)
 													.removeEvidenceCb(scope.removeEvidence);
 						// console.log(d3.selectAll(el));
 						scope.$watch('hypothesis', function(o, n){
@@ -28,9 +29,14 @@ angular.module('achAngular', [])
 						var eBox = d3Components.evidenceBox()
 												.number(+attrs.evidenceBox)
 												.evidences(scope.evidence.data)
+												.title(scope.evidence.title)
 												.addToHypothesisCb(scope.addToHypothesis);
 
-						var box = d3.selectAll(el).call(eBox);
+						// var box = d3.selectAll(el).call(eBox);
+						scope.$watch('evidence', function(o, n){
+							console.log(o, n);
+							var box = d3.selectAll(el).call(eBox);
+						}, true);
 					}
 				}
 			})
@@ -75,7 +81,8 @@ angular.module('achAngular', [])
 						    }
 						  });
 					// }
-						if(attrs.id !== 'yes-drop'){
+					// console.log(el.hasClass('entity'));
+						if(!el.hasClass('entity')){
 							drag.allowFrom('.panel-heading').on('dragstart', function(event) {
 						    var base, base1;
 						    // console.log(event);
@@ -111,7 +118,7 @@ angular.module('achAngular', [])
 							      return draggableElement.classList.add('can-drop');
 							    },
 							    ondragleave: function(event) {
-							      console.log('left');
+							      // console.log('left');
 							      event.target.classList.remove('drop-target');
 							      return event.relatedTarget.classList.remove('can-drop');
 							    },
@@ -145,9 +152,9 @@ angular.module('achAngular', [])
 							  });
 							}
 							if(attrs.evidenceBox){
-								console.log(attrs.evidenceBox)
+								// console.log(attrs.evidenceBox)
 								interact(el[0]).dropzone({
-								    accept: '#yes-drop',
+								    accept: '.entity',
 								    overlap: 'pointer',
 								    ondropactivate: function(event) {
 								      return event.target.classList.add('drop-active');
@@ -160,7 +167,7 @@ angular.module('achAngular', [])
 								      return draggableElement.classList.add('can-drop');
 								    },
 								    ondragleave: function(event) {
-								      console.log('left');
+								      // console.log('left');
 								      event.target.classList.remove('drop-target');
 								      return event.relatedTarget.classList.remove('can-drop');
 								    },
@@ -170,11 +177,14 @@ angular.module('achAngular', [])
 								      event.relatedTarget.classList.add('Dropped');
 								      x = event.interaction.startCoords.client.x - event.relatedTarget.originalPosX;
 								      y = event.interaction.startCoords.client.y - event.relatedTarget.originalPosY;
-								      console.log(event.interaction.startCoords)
+								      // console.log(event.interaction.startCoords)
 								      event.relatedTarget.style.webkitTransform = event.relatedTarget.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
 								      event.relatedTarget.setAttribute('data-x', x);
 								      event.relatedTarget.setAttribute('data-y', y);
-								      alert("added " + (event.relatedTarget.getAttribute('entity-name')));
+								      var entityScope = angular.element(event.relatedTarget).scope();
+								      // console.log('entity scope', entityScope);
+								      scope.addEntity(entityScope.entity);
+								      // alert("added " + (event.relatedTarget.getAttribute('entity-name')));
 								      // return console.log(event);
 								    },
 								    ondropdeactivate: function(event) {

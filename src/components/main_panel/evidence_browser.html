@@ -1,44 +1,5 @@
 <div id="content" ng-controller="achCtrl as ach">
-<div ng-repeat="hypothesis in hypotheses" hypothesis-box="2" interact="dnd" data="hypothesis" ng-controller="hypothesisCtrl as hp"></div>
-<div ng-repeat="evidence in evidences" evidence-box="0" interact="dnd" data="evidence" ng-controller="evidenceCtrl as ev"></div>
-<div id="yes-drop" interact="drag" class="entity drag-drop" data-type="entity" entity-name="pranav" style="width: 100px;text-align: center; background-color: yellow;position: absolute;left:500px;">#pranav</div>
-    <!-- <div class="col-lg-4">
-        <div class="ibox float-e-margins panel panel-info">
-            <div class="ibox-title panel-heading">
-                <h5>Evidence 1 (11101029.txt)</h5>
-
-                <div ibox-tools></div>
-            </div>
-            <div class="ibox-content">
-                <div class="panel-body">
-                    <div class="panel-group">
-
-                        <label class="checkbox">
-                            <input type="checkbox" ng-model="oneAtATime">
-                            Open only one at a time
-                        </label>
-                        <accordion close-others="oneAtATime">
-                            <accordion-group heading="Static Header, initially expanded" is-open="status.isFirstOpen" is-disabled="status.isFirstDisabled">
-                                This content is straight in the template.
-                            </accordion-group>
-                            <accordion-group heading="{{group.title}}" ng-repeat="group in main.groups">
-                                {{group.content}}
-                            </accordion-group>
-                            <accordion-group heading="Dynamic Body Content">
-                                <p>The body of the accordion group grows to fit the contents</p>
-                            </accordion-group>
-                            <accordion-group is-open="status.open">
-                                <accordion-heading>
-                                    I can have markup, too! <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
-                                </accordion-heading>
-                                This is just some content to illustrate fancy headings.
-                            </accordion-group>
-                        </accordion>
-
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> -->
+    <div ng-repeat="hypothesis in hypotheses" hypothesis-box="2" interact="dnd" data="hypothesis" ng-controller="hypothesisCtrl as hp"></div>
+    <div ng-repeat="evidence in evidences" evidence-box="0" interact="dnd" data="evidence" ng-controller="evidenceCtrl as ev"></div>
+    <span ng-repeat="entity in entities" interact="drag" class="entity drag-drop label {{entity.type}}" data-type="entity" entity-name="{{entity.name}}" style="text-align: center;position: absolute;left:500px;top:{{$index*25}}px">{{entity.name}}</span>
 </div>
