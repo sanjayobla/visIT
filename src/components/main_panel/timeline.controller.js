@@ -57,8 +57,8 @@ function timelineCtrl($scope){
 
 	  $scope.schema = {
 	    day: {
-	      type: 'dateday',
-	      format: '%Y-%m-%d_%H:%M:%S',
+	      type: 'datetime',
+	      format: '%Y-%m-%dT%H:%M:%S',
 	      name: 'Date'
 	    }
 	  };
@@ -67,19 +67,19 @@ function timelineCtrl($scope){
 	  "rows": [
 	    {
 	      "key": "hypothesis 1",
-	      "type": "spline",
+	      "type": "line",
 	      "axis": "y",
 	      "color": "#1f77b4"
 	    },
 	    {
 	      "key": "hypothesis 2",
-	      "type": "spline",
+	      "type": "line",
 	      "axis": "y",
 	      "color": "#ff7f0e"
 	    },
 	    {
 	      "key": "hypothesis 3",
-	      "type": "spline",
+	      "type": "line",
 	      "axis": "y",
 	      "color": "#2ca02c"
 	    }
@@ -96,7 +96,6 @@ function timelineCtrl($scope){
 	  },
 	  "xAxis": {
       "key": "day",
-      // "selector": true
       "displayFormat": "%Y-%m-%d",
     },
 	  "selection": {
