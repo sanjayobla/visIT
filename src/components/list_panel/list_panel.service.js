@@ -1,7 +1,7 @@
 angular.module('inspinia')
 	.service('ListAPIService', function($http, $q){
 		
-		var url_prefix = "http://127.0.0.1:5000";
+		var url_prefix = "";
 
 		return ({
 			fetchListContents: fetchListContents,

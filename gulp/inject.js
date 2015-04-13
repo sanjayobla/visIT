@@ -46,8 +46,8 @@ gulp.task('inject', ['styles'], function () {
   };
 
   gulp.src([paths.src + '/*.html', '!' + paths.src + '/index_serve.html'])
-    .pipe($.inject(injectStyles, injectOptionsFlask))
-    .pipe($.inject(injectScripts, injectOptionsFlask))
+    .pipe($.inject(injectStyles, injectOptions))
+    .pipe($.inject(injectScripts, injectOptions))
     .pipe(wiredep(wiredepOptions))
     .pipe(rename("index_serve.html"))
     .pipe(gulp.dest(paths.src));

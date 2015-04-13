@@ -3,7 +3,7 @@
 angular.module('inspinia')
 	.service('DocumentAPIService', function($http, $q){
 
-		var url_prefix = "http://127.0.0.1:5000"
+		var url_prefix = ""
 
 		//Below is a list of the publically accessible APIs from the service
 		return ({
