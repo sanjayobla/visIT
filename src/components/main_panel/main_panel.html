@@ -30,9 +30,12 @@
                                 <div infinite-canvas id="container" ng-include="'components/main_panel/evidence_browser.html'"></div>
                             </tab>
                             <tab heading="Provenance Timeline" ng-controller="timelineCtrl">
+                                <div class="btn-group">
+                                    <label class="btn btn-primary" ng-model="displayType" btn-radio="'dayString'">Event</label>
+                                    <label class="btn btn-primary" ng-model="displayType" btn-radio="'day'">Time</label>
+                                </div>
                                 <angularchart
                                     dataset="dataset"
-                                    schema="schema"
                                     options="options">
                                   </angularchart>
                             </tab>

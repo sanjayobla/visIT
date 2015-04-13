@@ -1,58 +1,63 @@
 function timelineCtrl($scope){
+	$scope.displayType = 'day';
+	$scope.$watch('displayType', function(){
+		// console.log(arguments);
+		$scope.options.xAxis.key = $scope.displayType; 
+	});
 	$scope.dataset = [
 	  {
-	    "day": "2013-01-08T00:00:00",
-	    "sales": 300,
-	    "income": 200,
-	    "customers": 30,
+	    "day": "2013-01-09T00:00:00",
+	    "hypothesis 3": 300,
+	    "hypothesis 2": 200,
+	    "hypothesis 1": 30,
 	    "units": 130,
-	    "dayString": "Montag"
+	    "dayString": "Add Hypothesis 1"
 	  },
 	  {
 	    "day": "2013-01-03T00:00:00",
-	    "sales": 200,
-	    "income": 130,
-	    "customers": 20,
+	    "hypothesis 3": 200,
+	    "hypothesis 2": 130,
+	    "hypothesis 1": 20,
 	    "units": 120,
-	    "dayString": "Dienstag"
+	    "dayString": "Add Evidence 1"
 	  },
 	  {
 	    "day": "2013-01-04T00:00:00",
-	    "sales": 160,
-	    "income": 90,
-	    "customers": 50,
+	    "hypothesis 3": 160,
+	    "hypothesis 2": 90,
+	    "hypothesis 1": 50,
 	    "units": 150,
-	    "dayString": "Mittwoch"
+	    "dayString": "Add Evidence 2"
 	  },
 	  {
 	    "day": "2013-01-05T00:00:00",
-	    "sales": 400,
-	    "income": 240,
-	    "customers": 40,
+	    "hypothesis 3": 400,
+	    "hypothesis 2": 240,
+	    "hypothesis 1": 40,
 	    "units": 140,
-	    "dayString": "Donnerstag"
+	    "dayString": "Remove Evidence 2"
 	  },
 	  {
 	    "day": "2013-01-06T00:00:00",
-	    "sales": 250,
-	    "income": 130,
-	    "customers": 60,
+	    "hypothesis 3": 250,
+	    "hypothesis 2": 130,
+	    "hypothesis 1": 60,
 	    "units": 160,
-	    "dayString": "Freitag"
+	    "dayString": "Add Entity to Evidence 1"
 	  },
 	  {
 	    "day": "2013-01-07T00:00:00",
-	    "sales": 250,
-	    "income": 220,
-	    "customers": 50,
+	    "hypothesis 3": 250,
+	    "hypothesis 2": 220,
+	    "hypothesis 1": 50,
 	    "units": 150,
-	    "dayString": "Samstag"
+	    "dayString": "Add Entity to Evidence 2"
 	  }
 	];
 
 	  $scope.schema = {
 	    day: {
-	      type: 'datetime',
+	      type: 'dateday',
 	      format: '%Y-%m-%d_%H:%M:%S',
 	      name: 'Date'
 	    }
@@ -61,20 +66,20 @@ function timelineCtrl($scope){
 		  $scope.options = {
 	  "rows": [
 	    {
-	      "key": "sales",
+	      "key": "hypothesis 1",
 	      "type": "spline",
 	      "axis": "y",
 	      "color": "#1f77b4"
 	    },
 	    {
-	      "key": "customers",
-	      "type": "area",
+	      "key": "hypothesis 2",
+	      "type": "spline",
 	      "axis": "y",
 	      "color": "#ff7f0e"
 	    },
 	    {
-	      "key": "units",
-	      "type": "bar",
+	      "key": "hypothesis 3",
+	      "type": "spline",
 	      "axis": "y",
 	      "color": "#2ca02c"
 	    }
@@ -89,6 +94,11 @@ function timelineCtrl($scope){
 	      3.9
 	    ]
 	  },
+	  "xAxis": {
+      "key": "day",
+      // "selector": true
+      "displayFormat": "%Y-%m-%d",
+    },
 	  "selection": {
 	    "selected": []
 	  },
