@@ -56,9 +56,21 @@ function evidenceBrowserCtrl($rootScope, $scope, EvidencesFactory) {
 
     }
 
-    $rootScope.$on('evidences:added', function(event, n){
+    $rootScope.$on('evidence:added', function(event, n){
         // console.log(n, transformEvidence(n))
         $scope.data.push(transformEvidence(n));
+    })
+    $rootScope.$on('evidence:changed', function(event, n){
+        // console.log(n);
+        _.forEach($scope.data, function(evidence, i){
+            if(evidence.title === n.title){
+                // console.log(transformEvidence(n))
+                // $scope.$apply(function(){
+                $scope.data[i] = transformEvidence(n);
+                // });
+            }
+        })
+        // $scope.data.push(transformEvidence(n));
     })
     $scope.data = transformEvidences();
     /*$scope.data = [{

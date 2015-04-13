@@ -7,10 +7,11 @@ function achParentCtrl($scope, $rootScope, HypothesesFactory, EvidencesFactory, 
 
 	$scope.addEvidenceBox = function(){
 		if (noName()) return;
-		console.log("ADD Evidence Box");
+		// console.log("ADD Evidence Box");
 		var args = {
 			title:$scope.objectName,
-			data: [{
+			count: 0,
+			data: [/*{
 				name:'Pranav',
 				category: 'Name',
 				type: 'label-success'
@@ -22,30 +23,33 @@ function achParentCtrl($scope, $rootScope, HypothesesFactory, EvidencesFactory, 
 				name: '2015',
 				category: 'Date',
 				type: 'label-warning'
-			}]
+			}*/]
 		}
 		EvidencesFactory.addData(args);
+		$scope.objectName = "";
 		// $rootScope.$emit('addEvidenceBox', args);
 	}
 	$scope.addHypothesisBox = function(){
 		if (noName()) return;
-		console.log("ADD Hypothesis Box");
+		// console.log("ADD Hypothesis Box");
 		var args = {
 			title: $scope.objectName,
-			overallWeights: [15, 7, 3],
+			overallWeights: [0, 0, 0],
+			count: 0,
 			data: {
 				positive: {
-				  data: ["Evidence 11", "Evidence 2"]
+				  data: []
 				},
 				negative: {
-				  data: ["Evidence 3", "Evidence 4"]
+				  data: []
 				},
 				neutral: {
-				  data: ["Evidence 5", "Evidence 6"]
+				  data: []
 				}
 			}
 		}
 		HypothesesFactory.addData(args);
+		$scope.objectName = "";
 		// $rootScope.$emit('addHypothesisBox', args);
 	}
 
@@ -57,6 +61,7 @@ function achParentCtrl($scope, $rootScope, HypothesesFactory, EvidencesFactory, 
 		type: 'label-danger'
 	}
 		EntityFactory.addData(args);
+		$scope.objectName = "";
 		// $rootScope.$emit('addHypothesisBox', args);
 	}
 }

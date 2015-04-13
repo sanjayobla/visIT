@@ -16,7 +16,7 @@ angular.module('achAngular', [])
 													.removeEvidenceCb(scope.removeEvidence);
 						// console.log(d3.selectAll(el));
 						scope.$watch('hypothesis', function(o, n){
-							console.log(o, n);
+							// console.log(o, n);
 							var box = d3.selectAll(el).data([scope.hypothesis]).call(hBox);
 						}, true);
 					}
@@ -34,8 +34,8 @@ angular.module('achAngular', [])
 
 						// var box = d3.selectAll(el).call(eBox);
 						scope.$watch('evidence', function(o, n){
-							console.log(o, n);
-							var box = d3.selectAll(el).call(eBox);
+							// console.log(o, n);
+							var box = d3.selectAll(el).data([scope.evidence]).call(eBox);
 						}, true);
 					}
 				}

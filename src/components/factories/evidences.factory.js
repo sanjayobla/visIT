@@ -2,8 +2,9 @@
 
 function EvidencesFactory($rootScope){
 	var data = [
-		{
+		/*{
 			title:'Evidence 1 (110203.txt)',
+			count: 3,
 			data: [{
 				name:'Anand',
 				category: 'Name',
@@ -17,7 +18,7 @@ function EvidencesFactory($rootScope){
 				category: 'Date',
 				type: 'label-warning'
 			}]
-		}
+		}*/
 	];
 	function getData(){
 		return data;
@@ -25,12 +26,27 @@ function EvidencesFactory($rootScope){
 
 	function addData(n){
 		data.push(n);
-		$rootScope.$emit('evidences:added', n);
+		$rootScope.$emit('evidence:added', n);
+	}
+
+	function addEntityTo(evidence, entity){
+		_.forEach(data, function(datum){
+			if(evidence.title === datum.title){
+				// console.log(_.some(datum.data, 'name', entity.name), datum, entity);
+				if(_.some(datum.data, 'name', entity.name)) return;
+				datum.data.push(entity);
+				datum.count++;
+				// console.log(datum);
+				$rootScope.$emit('evidence:changed', datum);
+				return;
+			}
+		})
 	}
 
 	var factory = {
 		getData: getData,
-		addData: addData
+		addData: addData,
+		addEntityTo: addEntityTo
 	};
 
 	return factory;

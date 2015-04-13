@@ -14,7 +14,7 @@ function achCtrl($scope, $rootScope, HypothesesFactory, EvidencesFactory, Entity
 	});*/
 }
 
-function hypothesisCtrl($scope){
+function hypothesisCtrl($scope, HypothesesFactory){
 	// console.log($scope);
 	// window.scope = $scope;
 	// function pnnChanged(){
@@ -24,21 +24,25 @@ function hypothesisCtrl($scope){
 	$scope.addEvidence = function(evidence, pnnType){
 		// console.log($scope.evidences[+evidence]);
 		$scope.$apply(function(){
-			$scope.hypothesis.data[pnnType].data.push(evidence.title);
+			HypothesesFactory.addEvidenceTo($scope.hypothesis, evidence, pnnType);
+			// $scope.hypothesis.data[pnnType].data.push(evidence.title);
 		});
 		// console.log(arguments);
 	}
 	$scope.removeEvidence = function(d,i,type){
-		console.log(arguments);
+		$scope.$apply(function(){
+			HypothesesFactory.removeEvidenceFrom($scope.hypothesis, d, type);
+		});
 	}
 }
-function evidenceCtrl($scope){
+function evidenceCtrl($scope, EvidencesFactory){
 	$scope.addToHypothesis = function(d,i){
 		console.log("ADD TO HYPO", $scope.evidence, d);
 	}
 	$scope.addEntity = function(data){
 		$scope.$apply(function(){
-			$scope.evidence.data.push(data);
+			// $scope.evidence.data.push(data);
+			EvidencesFactory.addEntityTo($scope.evidence, data);
 			// console.log($scope.evidences);
 		});
 	}

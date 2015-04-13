@@ -66,6 +66,19 @@ function hypothesesBrowserCtrl($rootScope, $scope, HypothesesFactory) {
         // console.log(n, transformHypothesis(n))
         $scope.data.push(transformHypothesis(n));
     })
+
+    $rootScope.$on('hypothesis:changed', function(event, n){
+        // console.log(n);
+        _.forEach($scope.data, function(hypothesis, i){
+            if(hypothesis.title === n.title){
+                // console.log(transformEvidence(n))
+                // $scope.$apply(function(){
+                $scope.data[i] = transformHypothesis(n);
+                // });
+            }
+        })
+        // $scope.data.push(transformEvidence(n));
+    })
     $scope.data = transformHypotheses();
     /*$scope.data = [{
         "id": 1,

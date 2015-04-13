@@ -14,7 +14,9 @@ ACHBar = function() {
         height: height + 'px',
         width: width || div.style('width')
       });
-      bars = div.selectAll('div.bar').data(data).enter().append('div').attr('class', 'bar').style({
+      bars = div.selectAll('div.bar').data(data);
+      bars.enter().append('div');
+      bars.attr('class', 'bar').style({
         width: function(d) {
           return ((d / d3.sum(data)) * 100) + "%";
         },
@@ -89,43 +91,47 @@ d3Components.hypothesisBox = function() {
     });
   };
   chart.initHeading = function(selection) {
-    var heading;
-    heading = selection.select('.panel-heading');
-    if (heading.empty()) {
-      heading = selection.append('div').attr('class', 'panel-heading').style({
-        'background-color': 'black',
-        'padding-bottom': 0,
-        color: 'white'
-      });
-    }
-    heading.text(title);
-    heading.on('dblclick', function(d) {
-      return console.log('double click', d);
-    });
-    headingButtons.chevron = heading.append('i').attr('class', 'fa fa-chevron-up pull-right').style({
-      'margin-top': '0px'
-    }).on('click', function(d) {
-      if (!hideBody) {
-        selection.select('.panel-body').style(hideDivStyle);
-        d3.select(this).attr('class', 'fa fa-chevron-down pull-right');
-        selection.select('.ach-bar').style(showDivStyle);
-        return hideBody = true;
-      } else {
-        selection.select('.panel-body').style(showDivStyle);
-        d3.select(this).attr('class', 'fa fa-chevron-up pull-right');
-        selection.select('.ach-bar').style(hideDivStyle);
-        return hideBody = false;
+    return selection.each(function(data) {
+      var heading;
+      heading = selection.select('.panel-heading');
+      if (heading.empty()) {
+        heading = selection.append('div').attr('class', 'panel-heading').style({
+          'background-color': 'black',
+          'padding-bottom': 0,
+          color: 'white'
+        });
       }
+      heading.text(title);
+      heading.on('dblclick', function(d) {
+        return console.log('double click', d);
+      });
+      headingButtons.chevron = heading.append('i').attr('class', 'fa fa-chevron-up pull-right').style({
+        'margin-top': '0px'
+      }).on('click', function(d) {
+        if (!hideBody) {
+          selection.select('.panel-body').style(hideDivStyle);
+          d3.select(this).attr('class', 'fa fa-chevron-down pull-right');
+          selection.select('.ach-bar').style(showDivStyle);
+          return hideBody = true;
+        } else {
+          selection.select('.panel-body').style(showDivStyle);
+          d3.select(this).attr('class', 'fa fa-chevron-up pull-right');
+          selection.select('.ach-bar').style(hideDivStyle);
+          return hideBody = false;
+        }
+      });
+      headingButtons.settings = heading.append('i').attr('class', 'fa fa-cog pull-right').style({
+        'margin': '0px 5px'
+      });
+      headingButtons.lineChart = heading.append('i').attr('class', 'fa fa-line-chart pull-right').style({
+        'margin': '0px 5px'
+      });
+      return headingButtons.label = heading.append('span').attr('class', 'label label-danger pull-right').style({
+        'margin': '-1px 5px'
+      }).text(function(d) {
+        return d.count;
+      });
     });
-    headingButtons.settings = heading.append('i').attr('class', 'fa fa-cog pull-right').style({
-      'margin': '0px 5px'
-    });
-    headingButtons.lineChart = heading.append('i').attr('class', 'fa fa-line-chart pull-right').style({
-      'margin': '0px 5px'
-    });
-    return headingButtons.label = heading.append('span').attr('class', 'label label-danger pull-right').style({
-      'margin': '-1px 5px'
-    }).text(label);
   };
   chart.initBody = function(selection) {
     var body;
@@ -244,11 +250,6 @@ pnnBox = function() {
   label = 5;
   removeEvidenceCb = function() {};
   removeItems = function(d, i) {
-    var data, mainDiv;
-    mainDiv = d3.select(this.parentNode.parentNode.parentNode);
-    data = mainDiv.data()[0];
-    data.splice(i, 1);
-    mainDiv.call(chart);
     return removeEvidenceCb(d, i, title.toLowerCase());
   };
   appendPlusMinus = function(selection) {
@@ -462,36 +463,40 @@ d3Components.evidenceBox = function() {
     });
   };
   chart.initHeading = function(selection) {
-    var heading;
-    heading = selection.select('.panel-heading');
-    if (heading.empty()) {
-      heading = selection.append('div').attr('class', 'panel-heading').style({
-        'padding-bottom': 0
-      });
-    }
-    heading.text(title);
-    headingButtons.chevron = heading.append('i').attr('class', 'fa fa-chevron-up pull-right').style({
-      'margin-top': '0px'
-    }).on('click', function(d) {
-      if (!hideBody) {
-        selection.select('.panel-body').style(hideDivStyle);
-        d3.select(this).attr('class', 'fa fa-chevron-down pull-right');
-        addPopoutHypothesisList(d3.select(this.parentNode.parentNode), true);
-        return hideBody = true;
-      } else {
-        selection.select('.panel-body').style(showDivStyle);
-        d3.select(this).attr('class', 'fa fa-chevron-up pull-right');
-        return hideBody = false;
+    return selection.each(function(data) {
+      var heading;
+      heading = selection.select('.panel-heading');
+      if (heading.empty()) {
+        heading = selection.append('div').attr('class', 'panel-heading').style({
+          'padding-bottom': 0
+        });
       }
+      heading.text(title);
+      headingButtons.chevron = heading.append('i').attr('class', 'fa fa-chevron-up pull-right').style({
+        'margin-top': '0px'
+      }).on('click', function(d) {
+        if (!hideBody) {
+          selection.select('.panel-body').style(hideDivStyle);
+          d3.select(this).attr('class', 'fa fa-chevron-down pull-right');
+          addPopoutHypothesisList(d3.select(this.parentNode.parentNode), true);
+          return hideBody = true;
+        } else {
+          selection.select('.panel-body').style(showDivStyle);
+          d3.select(this).attr('class', 'fa fa-chevron-up pull-right');
+          return hideBody = false;
+        }
+      });
+      headingButtons.add = heading.append('i').attr('class', 'fa fa-plus pull-right').style({
+        'margin-top': '0px'
+      }).on('click', function(d) {
+        return addPopoutHypothesisList(d3.select(this.parentNode.parentNode));
+      });
+      return headingButtons.label = heading.append('span').attr('class', 'label label-danger pull-right').style({
+        'margin-top': '-1px'
+      }).text(function(d) {
+        return d.count;
+      });
     });
-    headingButtons.add = heading.append('i').attr('class', 'fa fa-plus pull-right').style({
-      'margin-top': '0px'
-    }).on('click', function(d) {
-      return addPopoutHypothesisList(d3.select(this.parentNode.parentNode));
-    });
-    return headingButtons.label = heading.append('span').attr('class', 'label label-danger pull-right').style({
-      'margin-top': '-1px'
-    }).text(label);
   };
   chart.initBody = function(selection) {
     var body;

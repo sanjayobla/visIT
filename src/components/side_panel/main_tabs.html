@@ -32,7 +32,7 @@
                                 <div class="ibox-content">
                                     <div ui-tree id="tree-root">
                                         <ol ui-tree-nodes ng-model="data">
-                                            <li ng-repeat="node in data" ui-tree-node ng-include="'nodes_renderer.html'"></li>
+                                            <li ng-repeat="node in data" data-collapsed="true" ui-tree-node ng-include="'nodes_renderer.html'"></li>
                                         </ol>
                                     </div>
                                 </div>
@@ -48,7 +48,7 @@
                                 <div class="ibox-content">
                                     <div ui-tree id="tree-root">
                                         <ol ui-tree-nodes ng-model="data">
-                                            <li ng-repeat="node in data" ui-tree-node ng-include="'nodes_renderer.html'"></li>
+                                            <li ng-repeat="node in data" data-collapsed="true" ui-tree-node ng-include="'nodes_renderer.html'"></li>
                                         </ol>
                                     </div>
                                 </div>
@@ -61,7 +61,7 @@
     </div>
 </div>
 <script type="text/ng-template" id="nodes_renderer.html">
-    <div data-nodrag class="tree-node tree-node-content">
+    <div  data-nodrag class="tree-node tree-node-content">
         <a class="btn btn-primary btn-xs" data-nodrag ng-click="toggle(this)"><span class="fa" ng-class="{'fa-angle-down': collapsed, 'fa-angle-right': !collapsed}"></span></a>
         {{node.title}}
 
