@@ -4,3 +4,5 @@ dist/
 .DS_Store
 .tmp/
 env/
+*.pyc
+src/index_serve.html
