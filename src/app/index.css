@@ -4999,6 +4999,11 @@ nav .navbar-form-custom .form-group {
 .main-panel .panel-body .dim {
   opacity: 0.2;
 }
+.main-panel .panel-body .zoom-controls {
+  position: absolute;
+  top: 46px;
+  right: 330px;
+}
 .main-panel .panel-body .add {
   position: absolute;
   right: 45px;

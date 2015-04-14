@@ -1,6 +1,12 @@
 function achParentCtrl($scope, $rootScope, HypothesesFactory, EvidencesFactory, EntityFactory){
 	$scope.objectName = "";
 	
+	$scope.zoomIn = function(){
+		scroller.zoomBy(1.2, true);
+	}
+	$scope.zoomOut = function(){
+		scroller.zoomBy(0.8, true);
+	}
 	function noName(){
 		return !$scope.objectName;
 	}
