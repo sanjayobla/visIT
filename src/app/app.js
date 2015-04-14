@@ -21,6 +21,10 @@ angular.module('inspinia', ['ngAnimate',
             templateUrl: "app/minor/minor.html",
             data: { pageTitle: 'Example view' }
         })
+        .state('index.upload', {
+            url: "/upload",
+            templateUrl: "../app/upload/index.html"
+        });
 
     $urlRouterProvider.otherwise('/index/main');
   })
