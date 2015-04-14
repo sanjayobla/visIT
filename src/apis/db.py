@@ -31,6 +31,7 @@ class DB:
 
 
 	def fetch_doc_content(self, document_id):
+		#TODO: Add API's to fetch the entities along with the contents..
 		graph = Graph()
 		document_content = {}
 		document_node = graph.find_one("Document", property_key="name", property_value=document_id)
@@ -41,3 +42,59 @@ class DB:
 			document_content["entity_columns"] = []
 			document_content["summary"] = []
 		return document_content
+
+	def create_evidence(self, evidence_name):
+		#TODO: Associating a document with an evidence file..
+		graph = Graph()
+		evidence_node = graph.find_one("Evidence", property_key="name", property_value=evidence_name)
+		if (evidence_node == None):
+			evidence_node = Node("Evidence", name=evidence_name)
+			graph.create(evidence_node)
+		return str(evidence_node._id)
+
+	def get_all_hypothesis(self):
+		graph = Graph()
+		list_hypothesis = []
+		for hypothesis in graph.find("Hypothesis"):
+			list_hypothesis.append({
+				"title": hypothesis['name'], "id": hypothesis._id, "count": 0,
+				"overallWeights" : [],
+				"data": {
+					"positive": {
+					  "data": []
+					},
+					"negative": {
+					  "data": []
+					},
+					"neutral": {
+					  "data": []
+					}
+				}
+			})
+		return list_hypothesis
+
+	def create_hypothesis(self, hypothesis_name):
+		#TODO: Dont allow empty hypothesis names..
+		graph = Graph()
+		hypothesis_node = graph.find_one("Hypothesis", property_key="name", property_value=hypothesis_name)
+		if (hypothesis_node == None):
+			hypothesis_node = Node("Hypothesis", name=hypothesis_name)
+			graph.create(hypothesis_node)
+		return str(hypothesis_node._id)
+
+	def add_entity_to_evidence(self, entity_id, evidence_id, rel_type):
+		graph = Graph()
+		evidence_node = graph.node(evidence_id)
+		entity_node = graph.node(entity_id)
+		link_obj = Relationship(evidence_node, "ENTEVI", entity_node, type = rel_type)
+		graph.create(link_obj)
+		return str(link_obj._id)
+
+	def add_evidence_to_hypothesis(self, evidence_id, hypothesis_id, rel_type, rel_weight):
+		graph = Graph()
+		evidence_node = graph.node(evidence_id)
+		hypothesis_node = graph.node(hypothesis_id)
+		link_obj = Relationship(hypothesis_node, "EVIHYP", evidence_node, type = rel_type, weight = rel_weight)
+		graph.create(link_obj)
+		return str(link_obj._id)
+

@@ -61,6 +61,10 @@ function hypothesesBrowserCtrl($rootScope, $scope, HypothesesFactory) {
         return hypotheses;
     }
 
+    $rootScope.$on("hypotheses:retrieveDB", function(event, n){
+        $scope.data = transformHypotheses();
+    });
+
     // console.log(transformHypotheses());
     $rootScope.$on('hypothesis:added', function(event, n){
         // console.log(n, transformHypothesis(n))

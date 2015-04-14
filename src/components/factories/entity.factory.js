@@ -17,6 +17,7 @@ function EntityFactory($rootScope){
 		type: 'label-warning',
 		loc: 2
 	}];
+	
 	function getData(){
 		return data;
 	}

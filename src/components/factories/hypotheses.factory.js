@@ -1,6 +1,6 @@
 'user strict'
 
-function HypothesesFactory($rootScope, EventsFactory, EvidencesFactory){
+function HypothesesFactory($http, $rootScope, EventsFactory, EvidencesFactory){
 	var data = [
 			/*{
 				title:'Anand Framed Roger Rabbit',
@@ -18,16 +18,40 @@ function HypothesesFactory($rootScope, EventsFactory, EvidencesFactory){
 					}
 				}
 			}*/
-		]
+	];
+
+	initFactory();
+
+	function initFactory(){
+		return $http.get('/data/get-all-hypothesis').then(function(response) {
+	   		data = response.data;
+	   		$rootScope.$emit('hypotheses:retrieveDB', data);
+	    });
+	}
+
 	function getData(){
+		console.log("getData called", data);
 		return data;
 	}
 
-	function addData(n){
-		data.push(n);
-		EventsFactory.addData(data.length-1, null, 'add', data);
-		// $rootScope.$emit('addHypothesisBox', data);
-		$rootScope.$emit('hypothesis:added', n);
+function addData(n){
+		return $http({
+	    	headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+	    	url: '/data/create-hypothesis',
+	    	method: "POST",
+	    	data: "hypothesis="+n.title,
+	    })
+        .success(function(hypothesis_id) {
+        	n.id = hypothesis_id;
+        	data.push(n);
+        	console.log("Node pushed", n);
+        	EventsFactory.addData(data.length-1, null, 'add', data);
+        	$rootScope.$emit('hypothesis:added', n);
+        });
+		// console.log("hypothesis added..", n);
+		// data.push(n);
+		// // $rootScope.$emit('addHypothesisBox', data);
+		// $rootScope.$emit('hypothesis:added', n);
 	}
 
 	function getEvidenceNum(value, directValue){
@@ -40,6 +64,7 @@ function HypothesesFactory($rootScope, EventsFactory, EvidencesFactory){
 		});*/
 	}
 
+
 	function getHypothesisNum(value){
 		return _.findIndex(data, function(hypothesis) {
 		  return value.title == hypothesis.title;
@@ -49,7 +74,7 @@ function HypothesesFactory($rootScope, EventsFactory, EvidencesFactory){
 		});*/
 	}
 	function addEvidenceTo(hypothesis, evidence, pnnType){
-		// console.log(arguments);
+		console.log(hypothesis, evidence, pnnType);
 		if(hypothesis.data.positive.data.indexOf(evidence.title) > -1) return;
 		if(hypothesis.data.neutral.data.indexOf(evidence.title) > -1) return;
 		if(hypothesis.data.negative.data.indexOf(evidence.title) > -1) return;
@@ -69,6 +94,7 @@ function HypothesesFactory($rootScope, EventsFactory, EvidencesFactory){
 	}
 
 	function removeEvidenceFrom(hypothesis, evidence, pnnType){
+		console.log(hypothesis, evidence, pnnType);
 		_.remove(hypothesis.data[pnnType].data, function(n) {
 		  return n === evidence;
 		});
@@ -96,5 +122,6 @@ function HypothesesFactory($rootScope, EventsFactory, EvidencesFactory){
 
 	return factory;
 }
+
 angular.module('inspinia')
 	.factory('HypothesesFactory', HypothesesFactory);

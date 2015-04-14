@@ -137,3 +137,12 @@ def get_document(doc_id):
 	# 	"entity_columns": entity_columns, 
 	# 	"id": document_cursor["ID"]
 	# })
+
+@mod_data.route('/create-hypothesis', methods=["POST"])
+def create_hypothesis():
+	hypothesis_name = request.form.get('hypothesis', type=str)
+	return GraphDB().create_hypothesis(hypothesis_name)
+
+@mod_data.route('/get-all-hypothesis')
+def get_all_hypothesis():
+	return json.dumps(GraphDB().get_all_hypothesis())

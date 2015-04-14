@@ -6,7 +6,7 @@
 
     <div class="panel-body" style="padding: 0px;">
         <tabset>
-            <tab heading="Entity" ng-controller="entityViewerCtrl" class="entity-tab">
+            <tab heading="Entity" ng-controller="entityViewerCtrl">
                 <!-- <div class="row text-center">
                     <div class="btn-group">
                         <label class="btn btn-primary" ng-model="radioModel" btn-radio="'Selected'">Selected</label>
@@ -14,7 +14,7 @@
                     </div>
                 </div> -->
                 <!-- <br> -->
-                <div list-view></div>
+                <div class="entity-tab-content" list-view></div>
                 <!-- 
                 Selected option controller
                 <div class="row" ng-include="'components/side_panel/entity/information.html'">
