@@ -1,6 +1,6 @@
 'user strict'
 
-function HypothesesFactory($rootScope){
+function HypothesesFactory($rootScope, EventsFactory, EvidencesFactory){
 	var data = [
 			/*{
 				title:'Anand Framed Roger Rabbit',
@@ -25,10 +25,29 @@ function HypothesesFactory($rootScope){
 
 	function addData(n){
 		data.push(n);
+		EventsFactory.addData(data.length-1, null, 'add', data);
 		// $rootScope.$emit('addHypothesisBox', data);
 		$rootScope.$emit('hypothesis:added', n);
 	}
 
+	function getEvidenceNum(value, directValue){
+		return _.findIndex(EvidencesFactory.getData(), function(evidence) {
+			if(directValue) return value === evidence.title;
+		  return value.title == evidence.title;
+		});
+		/*return _.forEach(EvidencesFactory.getData(), function(evidence, i){
+			if(value.title === evidence.title) return i;
+		});*/
+	}
+
+	function getHypothesisNum(value){
+		return _.findIndex(data, function(hypothesis) {
+		  return value.title == hypothesis.title;
+		});
+		/*return _.forEach(data, function(hypothesis, i){
+			if(value.title === hypothesis.title) return i;
+		});*/
+	}
 	function addEvidenceTo(hypothesis, evidence, pnnType){
 		// console.log(arguments);
 		if(hypothesis.data.positive.data.indexOf(evidence.title) > -1) return;
@@ -45,6 +64,7 @@ function HypothesesFactory($rootScope){
 			hypothesis.overallWeights[1]++;
 		}
 		else hypothesis.overallWeights[2]++;
+		EventsFactory.addData(getHypothesisNum(hypothesis), getEvidenceNum(evidence), 'add', data);
 		$rootScope.$emit('hypothesis:changed', hypothesis);
 	}
 
@@ -62,6 +82,7 @@ function HypothesesFactory($rootScope){
 		}
 		else hypothesis.overallWeights[2]--;
 		// console.log(arguments, hypothesis);
+		EventsFactory.addData(getHypothesisNum(hypothesis), getEvidenceNum(evidence, true), 'remove', data);
 		$rootScope.$emit('hypothesis:changed', hypothesis)
 
 	}

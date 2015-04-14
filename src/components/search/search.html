@@ -1,9 +1,18 @@
 <i style="padding-right: 1em;" class="fa fa-search"></i>
-<isteven-multi-select    
-    input-model="modernBrowsers"    
-    output-model="outputBrowsers"
-    button-label="name"
-    item-label="name type"
+<isteven-multi-select  ng-controller="searchCtrl"  
+    input-model="achGroups"    
+    output-model="achResults"
+    button-label="title"
+    item-label="title"
     tick-property="ticked"
+    group-property="achGroup"
+    on-open="fOpen()"                
+    on-close="fClose()"
+    on-item-click="fClick( data )"
+    on-select-all="fSelectAll()"
+    on-select-none="fSelectNone()"
+    on-reset="fReset()"
+    on-clear="fClear()"
+    on-search-change="fSearchChange( data )"
 >
 </isteven-multi-select>

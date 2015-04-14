@@ -14,7 +14,28 @@ function achCtrl($scope, $rootScope, HypothesesFactory, EvidencesFactory, Entity
 	});*/
 }
 
-function hypothesisCtrl($scope, HypothesesFactory){
+function hypothesisCtrl($rootScope, $scope, HypothesesFactory){
+	$scope.inSearch = 0;
+	$rootScope.$on('globalSearch:active', function(evt, results){
+		if(results.length === 0) {
+			$scope.inSearch = 0;
+		}
+		else{
+			$scope.inSearch = _.findIndex(results, function(data) {
+			  return $scope.hypothesis.title == data.title;
+			});
+			if($scope.inSearch === -1){
+				var resultTitles = _.pluck(results, 'title');
+				var intersectionP = _.intersection(resultTitles, $scope.hypothesis.data.positive.data);
+				var intersectionN = _.intersection(resultTitles, $scope.hypothesis.data.neutral.data);
+				var intersectionNE = _.intersection(resultTitles, $scope.hypothesis.data.negative.data);
+
+				if(intersectionP.length > 0 || intersectionN.length > 0 || intersectionNE.length > 0){
+					$scope.inSearch = 0;
+				}
+			}
+		}
+	});
 	// console.log($scope);
 	// window.scope = $scope;
 	// function pnnChanged(){
@@ -35,7 +56,26 @@ function hypothesisCtrl($scope, HypothesesFactory){
 		});
 	}
 }
-function evidenceCtrl($scope, EvidencesFactory){
+function evidenceCtrl($rootScope, $scope, EvidencesFactory){
+	$scope.inSearch = 0;
+	$rootScope.$on('globalSearch:active', function(evt, results){
+		console.log(results);
+		if(results.length === 0) {
+			$scope.inSearch = 0;
+		}
+		else{
+			$scope.inSearch = _.findIndex(results, function(data) {
+			  return $scope.evidence.title == data.title;
+			});
+			if($scope.inSearch === -1){
+				var resultTitles = _.pluck(results, 'title');
+				var entityNames = _.pluck($scope.evidence.data, 'name');
+				var intersection = _.intersection(resultTitles, entityNames);
+				if(intersection.length > 0) $scope.inSearch = 0;
+			}
+		}
+		// console.log('found', found);
+	});
 	$scope.addToHypothesis = function(d,i){
 		console.log("ADD TO HYPO", $scope.evidence, d);
 	}

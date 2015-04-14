@@ -4996,6 +4996,9 @@ nav .navbar-form-custom .form-control {
 nav .navbar-form-custom .form-group {
   padding-top: 6px;
 }
+.main-panel .panel-body .dim {
+  opacity: 0.2;
+}
 .main-panel .panel-body .add {
   position: absolute;
   right: 45px;
@@ -5007,7 +5010,10 @@ nav .navbar-form-custom .form-group {
 }
 .main-panel .panel-body .ach-search {
   position: absolute;
-  right: 145px;
+  right: 125px;
   top: 45px;
   z-index: 99;
+}
+.main-panel .panel-body .ach-search input {
+  border-radius: 3px;
 }
