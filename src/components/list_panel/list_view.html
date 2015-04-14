@@ -8,41 +8,41 @@
           </select>
         </div>
         <div class="col-xs-2 js-tooltip pull-left" data-toggle="tooltip" data-placement="bottom" title="Clear Selections" style="padding-left: 5px;">
-          <button type="button" class="btn btn-default btn-sm" ng-click="clearSelections()">Clear</button>
+          <button type="button" class="btn btn-default" ng-click="clearSelections()">Clear</button>
         </div>
       </div>
-      <div class="row list-row top-margin-10">
+      <div class="row list-row top-margin-10 margin-bottom-10">
         <div class="col-xs-12" style="padding-left: 20px;">
           <div class="btn-group">
-            <button type="button" class="btn btn-default btn-xs js-tooltip js-sort-alphabetically" data-toggle="tooltip" data-placement="top" title="Sort list alphabetically" ng-click="orderByPredicate='name';" ng-class="{true:'active', false:''}[orderByPredicate=='name']">
+            <button type="button" class="btn btn-default btn-sm js-tooltip js-sort-alphabetically" data-toggle="tooltip" data-placement="top" title="Sort list alphabetically" ng-click="orderByPredicate='name';" ng-class="{true:'active', false:''}[orderByPredicate=='name']">
               <span class="glyphicon list-glyphicon glyphicon-sort-by-alphabet"></span>
             </button>
-            <button type="button" class="btn btn-default btn-xs js-tooltip js-sort-by-frequency" data-toggle="tooltip" data-placement="top" title="Sort list by frequency" ng-click="orderByPredicate='-frequency';" ng-class="{true:'active', false:''}[orderByPredicate=='-frequency']">
+            <button type="button" class="btn btn-default btn-sm js-tooltip js-sort-by-frequency" data-toggle="tooltip" data-placement="top" title="Sort list by frequency" ng-click="orderByPredicate='-frequency';" ng-class="{true:'active', false:''}[orderByPredicate=='-frequency']">
               <span class="glyphicon list-glyphicon glyphicon-sort-by-attributes-alt"></span>
             </button>
-            <button type="button" class="btn btn-default btn-xs js-tooltip js-sort-by-connection" data-toggle="tooltip" data-placement="top" title="Sort list by connection strength"  ng-click="orderByPredicate='-strength';" ng-class="{true:'active', false:''}[orderByPredicate=='-strength']">
+            <button type="button" class="btn btn-default btn-sm js-tooltip js-sort-by-connection" data-toggle="tooltip" data-placement="top" title="Sort list by connection strength"  ng-click="orderByPredicate='-strength';" ng-class="{true:'active', false:''}[orderByPredicate=='-strength']">
               <span class="glyphicon list-glyphicon glyphicon-align-justify colored"></span>
             </button>
           </div>
 
-          &nbsp;|&nbsp;&nbsp;
+          |
 
           <div class="btn-group">
-            <button type="button" class="btn btn-default btn-xs js-tooltip js-active-top" data-toggle="tooltip" data-placement="top" title="Bring active elements to the top of the list" ng-click="setFirstOrderSort('-hasStrength')" ng-class="{true:'active', false:''}[firstOrderPredicate=='-hasStrength']">
+            <button type="button" class="btn btn-default btn-sm js-tooltip js-active-top" data-toggle="tooltip" data-placement="top" title="Bring active elements to the top of the list" ng-click="setFirstOrderSort('-hasStrength')" ng-class="{true:'active', false:''}[firstOrderPredicate=='-hasStrength']">
               <span class="glyphicon list-glyphicon glyphicon-arrow-up"></span>
             </button>
           </div>
 
-          &nbsp;&nbsp;|&nbsp;
+          |
 
           <div class="btn-group">
-            <button type="button" class="btn btn-default btn-xs js-tooltip js-align-left" data-toggle="tooltip" data-placement="top" title="Align Left" ng-click="setAlignment('text-left')" ng-class="{true:'active', false:''}[align=='text-left']">
+            <button type="button" class="btn btn-default btn-sm js-tooltip js-align-left" data-toggle="tooltip" data-placement="top" title="Align Left" ng-click="setAlignment('text-left')" ng-class="{true:'active', false:''}[align=='text-left']">
               <span class="glyphicon list-glyphicon glyphicon-align-left"></span>
             </button>
-            <button type="button" class="btn btn-default btn-xs js-tooltip js-align-center" data-toggle="tooltip" data-placement="top" title="Center" ng-click="setAlignment('text-center')" ng-class="{true:'active', false:''}[align=='text-center']">
+            <button type="button" class="btn btn-default btn-sm js-tooltip js-align-center" data-toggle="tooltip" data-placement="top" title="Center" ng-click="setAlignment('text-center')" ng-class="{true:'active', false:''}[align=='text-center']">
               <span class="glyphicon list-glyphicon glyphicon-align-center"></span>
             </button>
-            <button type="button" class="btn btn-default btn-xs js-tooltip js-align-right" data-toggle="tooltip" data-placement="top" title="Align Right" ng-click="setAlignment('text-right')" ng-class="{true:'active', false:''}[align=='text-right']">
+            <button type="button" class="btn btn-default btn-sm js-tooltip js-align-right" data-toggle="tooltip" data-placement="top" title="Align Right" ng-click="setAlignment('text-right')" ng-class="{true:'active', false:''}[align=='text-right']">
               <span class="glyphicon list-glyphicon glyphicon-align-right"></span>
             </button>
           </div>

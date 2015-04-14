@@ -25,8 +25,11 @@ angular.module('inspinia')
 		
 		$scope.width = $window.innerWidth - 40;
 		$scope.height = $window.innerHeight;
-		$scope.gridHeight = $window.innerHeight - 75;
-		$scope.restrictedHeight = $window.innerHeight - 200;
+		$scope.gridHeight = 522;
+		$scope.restrictedHeight = 412;
+
+		// $scope.gridHeight = $window.innerHeight - 75;
+		// $scope.restrictedHeight = $window.innerHeight - 200;
 
 		loadRemoteData();
 
