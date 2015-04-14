@@ -51,8 +51,6 @@ def get_list_contents():
 	session_db = DBUtils().get_session_db()
 	list_columns = get_columns_with_list_content()
 
-	print list_columns
-
 	all_data = []
 	for header in headers:
 		aggregate_array = []
@@ -68,11 +66,14 @@ def get_list_contents():
 				{'$unwind':'$docs'},
 				{'$project':{'name':'$docs._id', 'count':'$docs.count','frequency':'$docs.rate','strength':{'$literal':0},'hasStrength':{'$literal':0},'strengthCount':{'$literal':0}}}
 		])
-		
-		content_list = session_db.aggregate(aggregate_array)['result']
-		if content_list:
-			print content_list, [item['count'] for item in content_list]
 
+		content_list = []
+		command_cursor = session_db.aggregate(aggregate_array)
+
+		for obj in command_cursor:
+			content_list.append(obj)
+
+		if content_list:
 			if max([item['count'] for item in content_list]) == 1:
 				temp_list = content_list
 				content_list = []
