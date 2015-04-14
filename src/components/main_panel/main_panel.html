@@ -22,6 +22,10 @@
                                         <li ng-click="addEntity()"><a href="">Entity</a></li>
                                     </ul>
                                 </div>
+                                <div class="btn-group zoom-controls">
+                                    <button ng-click="zoomIn()" class="btn btn-success btn-small" type="button"><i class="fa fa-plus"></i></button>
+                                    <button ng-click="zoomOut()" class="btn btn-danger btn-small" type="button"><i class="fa fa-minus"></i></button>
+                                </div>
                                 <form class="ach-search">
                                     <div class="form-group">
                                         <input type="text" ng-model="objectName" placeholder="Object of Interest" class="form-control" name="ach-search">
@@ -31,8 +35,8 @@
                             </tab>
                             <tab heading="Provenance Timeline" ng-controller="timelineCtrl">
                                 <div class="btn-group">
-                                    <label class="btn btn-primary" ng-model="displayType" btn-radio="'dayString'">Event</label>
-                                    <label class="btn btn-primary" ng-model="displayType" btn-radio="'day'">Time</label>
+                                    <label class="btn btn-primary" ng-model="displayType" btn-radio="'event'">Event</label>
+                                    <label class="btn btn-primary" ng-model="displayType" btn-radio="'time'">Time</label>
                                 </div>
                                 <angularchart
                                     dataset="dataset"

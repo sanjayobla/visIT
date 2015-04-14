@@ -67,7 +67,10 @@ angular.module('zyngaScroller', [])
 								if (e.target.tagName.match(/input|textarea|select/i)) {
 									return;
 								}
-								if(angular.element(e.target).hasClass('panel-heading') || angular.element(e.target).hasClass('entity')) return;
+								// console.log(angular.element(e.target));
+								if(angular.element(e.target).hasClass('panel-heading') 
+									|| angular.element(e.target).hasClass('entity')
+									|| angular.element(e.target).hasClass('label')) return;
 
 								scroller.doTouchStart([{
 									pageX: e.pageX,
@@ -100,10 +103,10 @@ angular.module('zyngaScroller', [])
 								mousedown = false;
 							}, false);
 
-							container.addEventListener(navigator.userAgent.indexOf("Firefox") > -1 ? "DOMMouseScroll" :  "mousewheel", function(e) {
+							/*container.addEventListener(navigator.userAgent.indexOf("Firefox") > -1 ? "DOMMouseScroll" :  "mousewheel", function(e) {
 								if(e.target.className === 'hypotheses-item' || e.target.className === 'popUp') return;
 								scroller.doMouseZoom(e.detail ? (e.detail * -120) : e.wheelDelta, e.timeStamp, e.pageX, e.pageY);
-							}, false);
+							}, false);*/
 						}
 					}
 				}
