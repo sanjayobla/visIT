@@ -37,6 +37,46 @@ angular.module('achAngular', [])
 							// console.log(o, n);
 							var box = d3.selectAll(el).data([scope.evidence]).call(eBox);
 						}, true);
+
+						function dragMoveListener (event) {
+					    var target = event.target,
+					        // keep the dragged position in the data-x/data-y attributes
+					        x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
+					        y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+
+					    // translate the element
+					    target.style.webkitTransform =
+					    target.style.transform =
+					      'translate(' + x + 'px, ' + y + 'px)';
+
+					    // update the posiion attributes
+					    target.setAttribute('data-x', x);
+					    target.setAttribute('data-y', y);
+					  }
+						var entityDrag = interact('.entity > .label')
+														  .draggable({
+														    // enable inertial throwing
+														    inertia: true,
+														    context: el,
+														    // keep the element within the area of it's parent
+														    restrict: {
+														      restriction: '.panel-body',
+														      endOnly: true,
+														      elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
+														    },
+
+														    // call this function on every dragmove event
+														    onmove: dragMoveListener,
+														    // call this function on every dragend event
+														    onend: function (event) {
+														      var textEl = event.target.querySelector('p');
+
+														      textEl && (textEl.textContent =
+														        'moved a distance of '
+														        + (Math.sqrt(event.dx * event.dx +
+														                     event.dy * event.dy)|0) + 'px');
+														    }
+														  });
 					}
 				}
 			})
@@ -154,7 +194,7 @@ angular.module('achAngular', [])
 							if(attrs.evidenceBox){
 								// console.log(attrs.evidenceBox)
 								interact(el[0]).dropzone({
-								    accept: '.entity',
+								    accept: '.entity.outside',
 								    overlap: 'pointer',
 								    ondropactivate: function(event) {
 								      return event.target.classList.add('drop-active');

@@ -511,7 +511,7 @@ d3Components.evidenceBox = function() {
       var entities, entityDiv, entityLabel, sel;
       sel = d3.select(this);
       entities = sel.selectAll('div.entity').data(evidences);
-      entityDiv = entities.enter().append('div').attr('class', 'entity').style({
+      entityDiv = entities.enter().append('div').attr('class', 'entity inside').style({
         'margin': '5px 0'
       });
       entities.exit().remove();
@@ -521,6 +521,9 @@ d3Components.evidenceBox = function() {
       }
       return entityLabel.attr('class', function(d, i) {
         return "label " + d.type;
+      }).style({
+        width: 'auto',
+        display: 'inline-block'
       }).text(function(d) {
         return d.name;
       });
