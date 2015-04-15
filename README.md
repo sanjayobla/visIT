@@ -29,6 +29,17 @@ Start the Neo4j server by issuing the command
 ```
 neo4j start
 ```
+
+Clone the pyner repository from github
+```
+https://github.com/dat/pyner
+```
+
+Install it onto the virtual environment by issuing the command 
+
+```
+python setup.py install
+```
 ---
 ####Development
 [UPDATE] The application is now dependent on flask. To start the app run,
