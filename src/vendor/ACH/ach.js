@@ -123,10 +123,15 @@ d3Components.hypothesisBox = function() {
           return hideBody = false;
         }
       });
-      sliderDiv = selection.append('svg').attr('class', 'slider-div');
+      sliderDiv = selection.selectAll('svg.slider-div');
+      if (sliderDiv.empty()) {
+        console.log('empty slider');
+        sliderDiv = selection.append('svg').attr('class', 'slider-div');
+      }
       sliderDiv.style('height', '30px').style('width', width);
       sliderThreshold = sliderControl().domain([5, 30]).width(width).onSlide(onSlide);
-      gSliderThreshold = sliderDiv.selectAll('g.slider-t').data([15]).enter().append('g').attr({
+      gSliderThreshold = sliderDiv.selectAll('g.slider-t').data([data.threshold]).enter().append('g').attr('class', 'slider-t');
+      gSliderThreshold.attr({
         transform: function() {
           var dx, dy;
           dx = 15;
@@ -398,7 +403,7 @@ sliderControl = function() {
   onSlide = function(selection) {};
   chart = function(selection) {
     return selection.each(function(data) {
-      var drag, group, handle, moveHandle, number, posScale;
+      var drag, group, handle, line, moveHandle, number, posScale;
       moveHandle = function(d) {
         var cx;
         cx = +d3.select(this).attr('cx') + d3.event.dx;
@@ -410,8 +415,14 @@ sliderControl = function() {
         }
       };
       group = d3.select(this);
-      group.selectAll('line').data([data]).enter().append('line').call(chart.initLine);
-      handle = group.selectAll('circle').data([data]).enter().append('circle').call(chart.initHandle);
+      line = group.selectAll('line');
+      if (line.empty()) {
+        line = group.selectAll('line').data([data]).enter().append('line').call(chart.initLine);
+      }
+      handle = group.selectAll('circle');
+      if (handle.empty()) {
+        handle = group.selectAll('circle').data([data]).enter().append('circle').call(chart.initHandle);
+      }
       posScale = d3.scale.linear().domain(domain).range([0, width - 100]);
       handle.attr({
         cx: function(d) {
@@ -419,7 +430,10 @@ sliderControl = function() {
         },
         'class': 'threshold-handle'
       });
-      number = group.selectAll('text').data([data]).enter().append('text');
+      number = group.selectAll('text.threshold-count');
+      if (number.empty()) {
+        number = group.selectAll('text.threshold-count').data([data]).enter().append('text').attr('class', 'threshold-count');
+      }
       number.text(function(d) {
         return d;
       }).attr({

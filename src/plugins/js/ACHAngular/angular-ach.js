@@ -85,9 +85,6 @@ angular.module('achAngular', [])
 				return {
 					restrict: 'A',
 					priority: 10,
-					// scope: {
-					// 	callback: "&"
-					// },
 					link: function(scope, el, attrs){
 						// if(attrs.id !== 'yes-drop'){
 						var drag = interact(el[0]).draggable({
@@ -144,6 +141,7 @@ angular.module('achAngular', [])
 						drag.on('dragend', function(event){event.target.style.zIndex--;})
 
 						if(attrs.hypothesisBox){
+							console.log(scope);
 							interact("[data-box-type='pnn']").dropzone({
 							    accept: '[data-box-type="evidence"]',
 							    overlap: 'pointer',
