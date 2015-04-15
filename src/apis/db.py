@@ -115,6 +115,7 @@ class DB:
 			list_hypothesis.append({
 				"title": hypothesis['name'], "id": hypothesis._id, "count": len(positive_data) - len(negative_data),
 				"overallWeights": [len(positive_data), len(negative_data), len(neutral_data)],
+				"threshold": hypothesis["threshold"],
 				"data": {
 					"positive": {
 						"data": positive_data
@@ -134,7 +135,7 @@ class DB:
 		graph = Graph()
 		hypothesis_node = graph.find_one("Hypothesis", property_key="name", property_value=hypothesis_name)
 		if (hypothesis_node == None):
-			hypothesis_node = Node("Hypothesis", name=hypothesis_name)
+			hypothesis_node = Node("Hypothesis", name=hypothesis_name, threshold=10)
 			graph.create(hypothesis_node)
 		return str(hypothesis_node._id)
 
@@ -155,4 +156,8 @@ class DB:
 		link_obj = Relationship(hypothesis_node, "EVIHYP", evidence_node, type = rel_type, weight = rel_weight)
 		graph.create(link_obj)
 		return str(link_obj._id)
+
+	def remove_evidence_from_hypothesis(self, evidence, hypothesis_id):
+		graph = Graph()
+		graph.cypher.execute("MATCH (h:Hypothesis)-[r]-(e:Evidence) where id(h)="+hypothesis_id+" and e.name=\""+evidence+"\" delete r")
 

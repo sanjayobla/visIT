@@ -161,6 +161,14 @@ def add_entity_to_evidence():
 	evidence_id = request.form.get("evidence_id", type=str)
 	return json.dumps(GraphDB().add_entity_to_evidence(entity_id, evidence_id, "default"))
 
+@mod_data.route("/add-entities-to-evidence", methods=["POST"])
+def add_entities_to_evidence():
+	evidence_id = request.form.get("evidence_id", type=str)
+	entities = json.loads(request.form.get("entities"))
+	for entity_id in entities:
+		GraphDB().add_entity_to_evidence(entity_id, evidence_id, "default")
+	return json.dumps([])
+
 @mod_data.route('/add-evidence-to-hypothesis', methods=["POST"])
 def add_evidence_to_hypothesis():
 	evidence_id = request.form.get("evidence_id", type=str)
@@ -173,3 +181,13 @@ def add_evidence_to_hypothesis():
 		rel_weight = -1
 
 	return json.dumps(GraphDB().add_evidence_to_hypothesis(evidence_id, hypothesis_id, rel_type, rel_weight))
+
+@mod_data.route('/delete-evidence-from-hypothesis', methods=["POST"])
+def remove_evidence_from_hypothesis():
+	hypothesis_id = request.form.get("hypothesis_id", type=str)
+	evidence = request.form.get("evidence", type=str)
+	rel_type = request.form.get("rel_type", type=str)
+
+	GraphDB().remove_evidence_from_hypothesis(evidence, hypothesis_id)
+	return json.dumps([])
+

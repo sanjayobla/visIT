@@ -43,7 +43,7 @@ def get_columns_with_list_content():
 
 @mod_list.route('/get-list-entity-types')
 def get_list_entity_types():
-	return json.dumps(get_column_list())
+	return json.dumps(["ORGANIZATION", "PERSON", "LOCATION", "DATE", "MONEY", "PERCENTAGE", "TIME", "ALL"])
 
 @mod_list.route('/get-list-contents')
 def get_list_contents():

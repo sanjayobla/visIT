@@ -36,26 +36,26 @@ function EvidencesFactory($http, $rootScope){
 	}
 
 	$rootScope.$on("appendEvidence", function(event, evidenceNode){
-		addData(evidenceNode);
+		addData(evidenceNode, function(evidence_id){
+			console.log("Inside callbackFN");
+			list_entity_ids = [];
+			for (var entity_index in evidenceNode.data){
+				list_entity_ids.push(evidenceNode.data[entity_index]['id'])
+			}
 
-		list_entity_ids = [];
-		for (var entity_index in evidenceNode.data){
-			list_entity_ids.push(list_entities[entity_index]['id'])
-		}
-
-		return $http({
-			headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-	    	url: '/data/add-entities-to-evidence',
-	    	method: "POST",
-	    	data: "evidence_id="+evidence_id+"&entities="+JSON.stringify(list_entity_ids)
-		})
-		.success(function(link_id){
-			evidenceNode.count += len(list_entities);
-			$rootScope.$emit('evidence:changed', evidenceNode);
+			return $http({
+				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+		    	url: '/data/add-entities-to-evidence',
+		    	method: "POST",
+		    	data: "evidence_id="+evidenceNode.id+"&entities="+JSON.stringify(list_entity_ids)
+			})
+			.success(function(link_id){
+				$rootScope.$emit('evidence:changed', evidenceNode);
+			});
 		});
 	});
 
-	function addData(n){
+	function addData(n, callbackFN){
 		return $http({
 	    	headers: {'Content-Type': 'application/x-www-form-urlencoded'},
 	    	url: '/data/create-evidence',
@@ -67,6 +67,10 @@ function EvidencesFactory($http, $rootScope){
         	data.push(n);
         	console.log("Node pushed", n);
         	$rootScope.$emit('evidence:added', n);
+
+        	if(callbackFN){
+        		callbackFN(evidence_id);
+        	}
         });
 
 		// data.push(n);

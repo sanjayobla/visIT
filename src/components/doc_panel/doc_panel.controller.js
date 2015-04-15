@@ -40,7 +40,19 @@ angular
 		$scope.addEntities = function(add_as_evidence_flag){
 			console.log("Add entities button clicked with the flag", add_as_evidence_flag);
 			console.log($scope.entity_node_list);
-			$scope.$emit("appendEntities", $scope.entity_node_list);
+
+			if(add_as_evidence_flag){
+				//add all the entities as an evidence..
+				var evidence = {
+					'title': "Evidence from "+ $scope.document_id,
+					'count': $scope.entity_node_list.length,
+					'data': $scope.entity_node_list
+				};
+				$scope.$emit('appendEvidence', evidence);
+			}else{
+				//add all the entities individually to the workspace..
+				$scope.$emit("appendEntities", $scope.entity_node_list);
+			}
 		}
 
 		$scope.loadDocument = function(doc_id){
