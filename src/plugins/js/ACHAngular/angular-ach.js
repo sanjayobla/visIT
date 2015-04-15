@@ -165,8 +165,8 @@ angular.module('achAngular', [])
 							    },
 							    ondrop: function(event) {
 							      var box, data, x, y, zoom;
-							      event.target.classList.add(event.relatedTarget.getAttribute('entity-name'));
-							      event.relatedTarget.classList.add('Dropped');
+							      // event.target.classList.add(event.relatedTarget.getAttribute('entity-name'));
+							      // event.relatedTarget.classList.add('Dropped');
 							      // box = d3.select(event.target).selectAll('div.evidence');
 							      // data = box.data();
 							      // data.push('Evidence 20');
@@ -214,8 +214,8 @@ angular.module('achAngular', [])
 								    },
 								    ondrop: function(event) {
 								      var x, y;
-								      event.target.classList.add(event.relatedTarget.getAttribute('entity-name'));
-								      event.relatedTarget.classList.add('Dropped');
+								      // event.target.classList.add(event.relatedTarget.getAttribute('entity-name'));
+								      // event.relatedTarget.classList.add('Dropped');
 								      x = event.interaction.startCoords.client.x - event.relatedTarget.originalPosX;
 								      y = event.interaction.startCoords.client.y - event.relatedTarget.originalPosY;
 								      // console.log(event.interaction.startCoords)
