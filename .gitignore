@@ -7,4 +7,5 @@ env/
 *.pyc
 src/index_serve.html
 src/app/index.css
+src/app/vendor.css
 src/upload/
