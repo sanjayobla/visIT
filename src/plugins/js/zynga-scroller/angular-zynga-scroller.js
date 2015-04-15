@@ -70,7 +70,7 @@ angular.module('zyngaScroller', [])
 								console.log(angular.element(e.target));
 								if(angular.element(e.target).hasClass('panel-heading') 
 									|| angular.element(e.target).hasClass('entity')
-									|| angular.element(e.target)[1].nodeName === 'circle'
+									|| angular.element(e.target)[0].nodeName === 'circle'
 									|| angular.element(e.target).hasClass('label')) return;
 
 								scroller.doTouchStart([{
