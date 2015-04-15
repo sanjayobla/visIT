@@ -104,7 +104,7 @@ function addData(n){
 			else hypothesis.overallWeights[2]++;
 			EventsFactory.addData(getHypothesisNum(hypothesis), getEvidenceNum(evidence), 'add', data);
 			$rootScope.$emit('hypothesis:changed', hypothesis);
-        });
+    });
 	}
 
 	function removeEvidenceFrom(hypothesis, evidence, pnnType){
@@ -128,7 +128,7 @@ function addData(n){
 	}
 
 	function changeThresholdOf(hypothesis, data){
-		if(Math.abs(hypothesis.threshold - Math.round(data)) > 1){
+		if(Math.abs(hypothesis.threshold - Math.round(data)) >= 1){
 			hypothesis.threshold = Math.round(data);
 			// console.log('threshold changed')
 			$rootScope.$emit('hypothesis:thresholdChanged', hypothesis, data);

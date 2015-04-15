@@ -1,26 +1,21 @@
 'user strict'
 
-function NotificationFactory($rootScope){
+function NotificationsFactory($rootScope){
 	var data = [/*{
-		name: 'Jack Varley',
-		category: 'PERSON',
-		type: 'PERSON',
-		id: 246,
-		loc: 0
-	},{
-		name: 'Eastern Washington',
-		category: 'LOCATION',
-		type: 'LOCATION',
-		id: 245,
-		loc: 1
-	},{
-		name: 'Tuesday',
-		category: 'DATE',
-		type: 'DATE',
-		id: 249,
-		loc: 2
+		title: 'Hypothesis 1',
+		threshold: 5,
 	}*/];
 	
+	$rootScope.$on('hypothesis:changed', function(event, hypothesis){
+		console.log('notifications', hypothesis)
+		if(hypothesis.count === hypothesis.threshold){
+			addData({
+				title: hypothesis.title,
+				threshold: hypothesis.threshold
+			})
+		}
+	})
+
 	function getData(){
 		return data.reverse();
 	}
@@ -31,12 +26,18 @@ function NotificationFactory($rootScope){
 		$rootScope.$emit('notification:added', n);
 	}
 
+	function removeAt(index){
+		data.splice(index, 1);
+		console.log('notifications', data);
+	}
+
 	var factory = {
 		getData: getData,
-		addData: addData
+		addData: addData,
+		removeAt: removeAt
 	};
 
 	return factory;
 }
 angular.module('inspinia')
-	.factory('NotificationFactory', NotificationFactory);
+	.factory('NotificationsFactory', NotificationsFactory);
