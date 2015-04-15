@@ -47,6 +47,7 @@ function addData(n){
 	    })
         .success(function(hypothesis_id) {
         	n.id = hypothesis_id;
+        	n.threshold = 10;
         	data.push(n);
         	console.log("Node pushed", n);
         	EventsFactory.addData(data.length-1, null, 'add', data);
@@ -109,21 +110,28 @@ function addData(n){
 
 	function removeEvidenceFrom(hypothesis, evidence, pnnType){
 		console.log(hypothesis, evidence, pnnType);
-		_.remove(hypothesis.data[pnnType].data, function(n) {
-		  return n === evidence;
+		return $http({
+			headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+	    	url: '/data/delete-evidence-from-hypothesis',
+	    	method: "POST",
+	    	data: "hypothesis_id="+hypothesis.id+"&rel_type="+pnnType+"&evidence="+evidence
+		}).success(function(){
+			_.remove(hypothesis.data[pnnType].data, function(n) {
+				return n === evidence;
+			});
+			if(pnnType === 'positive') {
+				hypothesis.count--;
+				hypothesis.overallWeights[0]--;
+			}
+			else if(pnnType === 'negative') {
+				hypothesis.count++;
+				hypothesis.overallWeights[1]--;
+			}
+			else hypothesis.overallWeights[2]--;
+			// console.log(arguments, hypothesis);
+			EventsFactory.addData(getHypothesisNum(hypothesis), getEvidenceNum(evidence, true), 'remove', data);
+			$rootScope.$emit('hypothesis:changed', hypothesis)
 		});
-		if(pnnType === 'positive') {
-			hypothesis.count--;
-			hypothesis.overallWeights[0]--;
-		}
-		else if(pnnType === 'negative') {
-			hypothesis.count++;
-			hypothesis.overallWeights[1]--;
-		}
-		else hypothesis.overallWeights[2]--;
-		// console.log(arguments, hypothesis);
-		EventsFactory.addData(getHypothesisNum(hypothesis), getEvidenceNum(evidence, true), 'remove', data);
-		$rootScope.$emit('hypothesis:changed', hypothesis)
 
 	}
 
