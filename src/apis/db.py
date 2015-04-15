@@ -75,6 +75,13 @@ class DB:
 		graph = Graph()
 		list_hypothesis = []
 		for hypothesis in graph.find("Hypothesis"):
+			
+			positive_data = []
+			negative_data = []
+			neutral_data = []
+
+			for evidence in graph.cypher.execute("MATCH(n:Hypothesis)--(e:Evidence) where id(n) = "+`hypothesis._id`+" return e"):
+
 			list_hypothesis.append({
 				"title": hypothesis['name'], "id": hypothesis._id, "count": 0,
 				"overallWeights" : [],
@@ -110,6 +117,8 @@ class DB:
 		return str(link_obj._id)
 
 	def add_evidence_to_hypothesis(self, evidence_id, hypothesis_id, rel_type, rel_weight):
+		##TODO: Change the count..
+		##TODO: Change the weight array..
 		graph = Graph()
 		evidence_node = graph.node(evidence_id)
 		hypothesis_node = graph.node(hypothesis_id)

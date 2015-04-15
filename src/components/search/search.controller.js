@@ -34,6 +34,17 @@ function searchCtrl($rootScope, $scope, HypothesesFactory, EntityFactory, Eviden
 			hypotheses.push(temp);
 		});
 		$scope.achGroups = createGrouping();
+	});
+
+	$rootScope.$on('evidences:retrieveDB', function(event, args){
+		evidences = [];
+		_.forEach(args, function(evidence){
+			var temp = _.pick(evidence, 'title');
+			temp.type = '(Evidence)';
+			temp.ticked = false;
+			evidences.push(temp);
+		});
+		$scope.achGroups = createGrouping();
 	})
 
 	$rootScope.$on('hypothesis:added', function(event, args){
@@ -43,6 +54,7 @@ function searchCtrl($rootScope, $scope, HypothesesFactory, EntityFactory, Eviden
 		hypotheses.push(temp);
 		$scope.achGroups = createGrouping();
 	});
+
 	$rootScope.$on('evidence:added', function(event, args){
 		var temp = _.pick(args, 'title');
 		temp.type = '(Evidence)';

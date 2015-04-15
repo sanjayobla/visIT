@@ -162,3 +162,11 @@ def add_entity_to_evidence():
 	entity_id = request.form.get("entity_id", type=str)
 	evidence_id = request.form.get("evidence_id", type=str)
 	return json.dumps(GraphDB().add_entity_to_evidence(entity_id, evidence_id, "default"))
+
+@mod_data.route('/add-evidence-to-hypothesis', methods=["POST"])
+def add_evidence_to_hypothesis():
+	evidence_id = request.form.get("evidence_id", type=str)
+	hypothesis_is = request.form.get("hypothesis_id", type=str)
+	rel_type = request.form.get("rel_type", type=str)
+	rel_weight = (rel_type == "positive")? 1 : (rel_type == "negative"? -1 : 0)
+	return json.dumps(GraphDB().add_evidence_to_hypothesis(evidence_id, hypothesis_id, rel_type, rel_weight))

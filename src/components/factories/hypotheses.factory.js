@@ -82,18 +82,28 @@ function addData(n){
 		if(hypothesis.data.neutral.data.indexOf(evidence.title) > -1) return;
 		if(hypothesis.data.negative.data.indexOf(evidence.title) > -1) return;
 
-		hypothesis.data[pnnType].data.push(evidence.title);
-		if(pnnType === 'positive') {
-			hypothesis.count++;
-			hypothesis.overallWeights[0]++;
-		}
-		else if(pnnType === 'negative') {
-			hypothesis.count--;
-			hypothesis.overallWeights[1]++;
-		}
-		else hypothesis.overallWeights[2]++;
-		EventsFactory.addData(getHypothesisNum(hypothesis), getEvidenceNum(evidence), 'add', data);
-		$rootScope.$emit('hypothesis:changed', hypothesis);
+		// /add-evidence-to-hypothesis
+
+		return $http({
+	    	headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+	    	url: '/data/add-evidence-to-hypothesis',
+	    	method: "POST",
+	    	data: "hypothesis_id="+hypothesis.id+"&evidence_id="+evidence.id+"&rel_type="+pnnType,
+	    })
+        .success(function(link_id) {
+        	hypothesis.data[pnnType].data.push(evidence.title);
+			if(pnnType === 'positive') {
+				hypothesis.count++;
+				hypothesis.overallWeights[0]++;
+			}
+			else if(pnnType === 'negative') {
+				hypothesis.count--;
+				hypothesis.overallWeights[1]++;
+			}
+			else hypothesis.overallWeights[2]++;
+			EventsFactory.addData(getHypothesisNum(hypothesis), getEvidenceNum(evidence), 'add', data);
+			$rootScope.$emit('hypothesis:changed', hypothesis);
+        });
 	}
 
 	function removeEvidenceFrom(hypothesis, evidence, pnnType){
