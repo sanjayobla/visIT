@@ -95,34 +95,48 @@ d3Components.hypothesisBox = function() {
   };
   chart.initHeading = function(selection) {
     return selection.each(function(data) {
-      var gSliderThreshold, heading, sliderDiv, sliderThreshold;
+      var gSliderThreshold, heading, headingTitle, sliderDiv, sliderThreshold;
       heading = selection.select('.panel-heading');
       if (heading.empty()) {
         heading = selection.append('div').attr('class', 'panel-heading').style({
           'background-color': 'black',
           'padding-bottom': 0,
-          color: 'white'
+          color: 'white',
+          height: "30px"
         });
       }
-      heading.text(title);
+      headingTitle = heading.selectAll('span.title');
+      if (headingTitle.empty()) {
+        headingTitle = heading.append('span');
+      }
+      headingTitle.attr('class', 'title').style({
+        width: "200px",
+        'white-space': 'nowrap',
+        overflow: 'hidden',
+        'text-overflow': 'ellipsis',
+        float: 'left'
+      });
+      headingTitle.text(title);
       heading.on('dblclick', function(d) {
         return console.log('double click', d);
       });
-      headingButtons.chevron = heading.append('i').attr('class', 'fa fa-chevron-up pull-right').style({
-        'margin-top': '0px'
-      }).on('click', function(d) {
-        if (!hideBody) {
-          selection.select('.panel-body').style(hideDivStyle);
-          d3.select(this).attr('class', 'fa fa-chevron-down pull-right');
-          selection.select('.ach-bar').style(showDivStyle);
-          return hideBody = true;
-        } else {
-          selection.select('.panel-body').style(showDivStyle);
-          d3.select(this).attr('class', 'fa fa-chevron-up pull-right');
-          selection.select('.ach-bar').style(hideDivStyle);
-          return hideBody = false;
-        }
-      });
+      if (!headingButtons.chevron) {
+        headingButtons.chevron = heading.append('i').attr('class', 'fa fa-chevron-up pull-right').style({
+          'margin-top': '0px'
+        }).on('click', function(d) {
+          if (!hideBody) {
+            selection.select('.panel-body').style(hideDivStyle);
+            d3.select(this).attr('class', 'fa fa-chevron-down pull-right');
+            selection.select('.ach-bar').style(showDivStyle);
+            return hideBody = true;
+          } else {
+            selection.select('.panel-body').style(showDivStyle);
+            d3.select(this).attr('class', 'fa fa-chevron-up pull-right');
+            selection.select('.ach-bar').style(hideDivStyle);
+            return hideBody = false;
+          }
+        });
+      }
       sliderDiv = selection.selectAll('svg.slider-div');
       if (sliderDiv.empty()) {
         console.log('empty slider');
@@ -139,9 +153,12 @@ d3Components.hypothesisBox = function() {
           return "translate(" + [dx, dy] + ")";
         }
       }).call(sliderThreshold);
-      return headingButtons.label = heading.append('span').attr('class', 'label label-danger pull-right').style({
-        'margin': '-1px 5px'
-      }).text(function(d) {
+      if (!headingButtons.label) {
+        headingButtons.label = heading.append('span').attr('class', 'label label-danger pull-right').style({
+          'margin': '-1px 5px'
+        });
+      }
+      return headingButtons.label.text(function(d) {
         return d.count;
       });
     });
@@ -504,7 +521,7 @@ d3Components.evidenceBox = function() {
   width = 250;
   height = 300;
   number = 0;
-  title = 'Evidence 1 (110203.txt)';
+  title = 'Evidence 1 (110203766537899.txt)';
   layers = {
     mainDiv: null
   };
@@ -586,36 +603,55 @@ d3Components.evidenceBox = function() {
   };
   chart.initHeading = function(selection) {
     return selection.each(function(data) {
-      var heading;
+      var heading, headingTitle;
       heading = selection.select('.panel-heading');
       if (heading.empty()) {
         heading = selection.append('div').attr('class', 'panel-heading').style({
-          'padding-bottom': 0
+          'padding-bottom': 0,
+          height: "30px"
         });
       }
-      heading.text(title);
-      headingButtons.chevron = heading.append('i').attr('class', 'fa fa-chevron-up pull-right').style({
-        'margin-top': '0px'
-      }).on('click', function(d) {
-        if (!hideBody) {
-          selection.select('.panel-body').style(hideDivStyle);
-          d3.select(this).attr('class', 'fa fa-chevron-down pull-right');
-          addPopoutHypothesisList(d3.select(this.parentNode.parentNode), true);
-          return hideBody = true;
-        } else {
-          selection.select('.panel-body').style(showDivStyle);
-          d3.select(this).attr('class', 'fa fa-chevron-up pull-right');
-          return hideBody = false;
-        }
+      headingTitle = heading.selectAll('span.title');
+      if (headingTitle.empty()) {
+        headingTitle = heading.append('span');
+      }
+      headingTitle.attr('class', 'title').style({
+        width: "150px",
+        'white-space': 'nowrap',
+        overflow: 'hidden',
+        'text-overflow': 'ellipsis',
+        float: 'left'
       });
-      headingButtons.add = heading.append('i').attr('class', 'fa fa-plus pull-right').style({
-        'margin-top': '0px'
-      }).on('click', function(d) {
-        return addPopoutHypothesisList(d3.select(this.parentNode.parentNode));
-      });
-      return headingButtons.label = heading.append('span').attr('class', 'label label-danger pull-right').style({
-        'margin-top': '-1px'
-      }).text(function(d) {
+      headingTitle.text(title);
+      if (!headingButtons.chevron) {
+        headingButtons.chevron = heading.append('i').attr('class', 'fa fa-chevron-up pull-right').style({
+          'margin-top': '0px'
+        }).on('click', function(d) {
+          if (!hideBody) {
+            selection.select('.panel-body').style(hideDivStyle);
+            d3.select(this).attr('class', 'fa fa-chevron-down pull-right');
+            addPopoutHypothesisList(d3.select(this.parentNode.parentNode), true);
+            return hideBody = true;
+          } else {
+            selection.select('.panel-body').style(showDivStyle);
+            d3.select(this).attr('class', 'fa fa-chevron-up pull-right');
+            return hideBody = false;
+          }
+        });
+      }
+      if (!headingButtons.add) {
+        headingButtons.add = heading.append('i').attr('class', 'fa fa-plus pull-right').style({
+          'margin-top': '0px'
+        }).on('click', function(d) {
+          return addPopoutHypothesisList(d3.select(this.parentNode.parentNode));
+        });
+      }
+      if (!headingButtons.label) {
+        headingButtons.label = heading.append('span').attr('class', 'label label-danger pull-right').style({
+          'margin-top': '-1px'
+        });
+      }
+      return headingButtons.label.text(function(d) {
         return d.count;
       });
     });

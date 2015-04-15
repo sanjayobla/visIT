@@ -14,6 +14,7 @@ angular.module('achAngular', [])
 													.number(+attrs.hypothesisBox)
 													.title(scope.hypothesis.title)
 													.onSlide(scope.onSlide)
+													.width(300)
 													.removeEvidenceCb(scope.removeEvidence);
 						// console.log(d3.selectAll(el));
 						scope.$watch('hypothesis', function(o, n){

@@ -12,6 +12,15 @@ function achCtrl($scope, $rootScope, HypothesesFactory, EvidencesFactory, Entity
 		console.log('received hypothesis')
 		// $scope.hypotheses = data;
 	});*/
+	$scope.getStyleForEntity = function(entity){
+		var left = 500;
+		var leftAdd = Math.floor(entity.loc / 10);
+		left = left + leftAdd*150;
+		var top = 0;
+		// console.log(entity.loc);
+		top = top + (entity.loc % 10);
+		return "text-align: center;position: absolute;left:"+left+"px;top:"+top*25+"px"
+	}
 }
 
 function hypothesisCtrl($rootScope, $scope, HypothesesFactory){
