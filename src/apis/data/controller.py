@@ -63,6 +63,7 @@ def index():
 				file_line_content = filter(None, [re.sub(r'[^\x00-\x7F]+',' ', line.rstrip('\n\r')).strip() for line in open(input_file_name, 'r')])
 
 				for line in file_line_content:
+					print "-->"+ line+"<--"
 					file_content.append(tagger.tag_text(line))
 
 				document_id = GraphDB().create_document(os.path.basename(input_file_name), file_content, [], 0)
