@@ -24,6 +24,17 @@ function searchCtrl($rootScope, $scope, HypothesesFactory, EntityFactory, Eviden
 		);
 		return temp;
 	}
+
+	$rootScope.$on('hypotheses:retrieveDB', function(event, args){
+		hypotheses = [];
+		_.forEach(args, function(hypothesis){
+			var temp = _.pick(hypothesis, 'title');
+			temp.type = '(Hypothesis)';
+			temp.ticked = false;
+			hypotheses.push(temp);
+		});
+		$scope.achGroups = createGrouping();
+	})
 	$rootScope.$on('hypothesis:added', function(event, args){
 		var temp = _.pick(args, 'title');
 		temp.type = '(Hypothesis)';

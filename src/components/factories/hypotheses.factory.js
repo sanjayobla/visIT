@@ -120,7 +120,7 @@ function addData(n){
 		if(Math.abs(hypothesis.threshold - Math.round(data)) > 1){
 			hypothesis.threshold = Math.round(data);
 			// console.log('threshold changed')
-			$rootScope.$emit('hypothesis:thresholdChanged', hypothesis);
+			$rootScope.$emit('hypothesis:thresholdChanged', hypothesis, data);
 			return;
 		}
 		// console.log('threshold unchanged')
