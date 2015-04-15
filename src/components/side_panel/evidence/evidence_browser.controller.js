@@ -56,6 +56,10 @@ function evidenceBrowserCtrl($rootScope, $scope, EvidencesFactory) {
 
     }
 
+    $rootScope.$on("evidences:retrieveDB", function(event, n){
+        $scope.data = transformEvidences();
+    });
+
     $rootScope.$on('evidence:added', function(event, n){
         // console.log(n, transformEvidence(n))
         $scope.data.push(transformEvidence(n));

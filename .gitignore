@@ -6,5 +6,6 @@ dist/
 env/
 *.pyc
 src/index_serve.html
+src/app/vendor.css
 src/app/index.css
 src/upload/

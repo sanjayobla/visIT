@@ -1,6 +1,6 @@
 'user strict'
 
-function EvidencesFactory($rootScope){
+function EvidencesFactory($http, $rootScope){
 	var data = [
 		/*{
 			title:'Evidence 1 (110203.txt)',
@@ -20,24 +20,63 @@ function EvidencesFactory($rootScope){
 			}]
 		}*/
 	];
+
+	initFactory();
+
+	function initFactory(){
+		return $http.get('/data/get-all-evidences').then(function(response) {
+	   		data = response.data;
+	   		console.log("responseData", data);
+	   		$rootScope.$emit('evidences:retrieveDB', data);
+	    });
+	}
+
 	function getData(){
 		return data;
 	}
 
 	function addData(n){
-		data.push(n);
-		$rootScope.$emit('evidence:added', n);
+		return $http({
+	    	headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+	    	url: '/data/create-evidence',
+	    	method: "POST",
+	    	data: "evidence="+n.title,
+	    })
+        .success(function(evidence_id) {
+        	n.id = evidence_id;
+        	data.push(n);
+        	console.log("Node pushed", n);
+        	$rootScope.$emit('evidence:added', n);
+        });
+
+		// data.push(n);
+		// console.log(n);
+		// $rootScope.$emit('evidence:added', n);
 	}
 
 	function addEntityTo(evidence, entity){
+		console.log("Adding ", entity," to ", evidence);
 		_.forEach(data, function(datum){
 			if(evidence.title === datum.title){
 				// console.log(_.some(datum.data, 'name', entity.name), datum, entity);
 				if(_.some(datum.data, 'name', entity.name)) return;
-				datum.data.push(entity);
-				datum.count++;
-				// console.log(datum);
-				$rootScope.$emit('evidence:changed', datum);
+
+				return $http({
+					headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+			    	url: '/data/add-entity-to-evidence',
+			    	method: "POST",
+			    	data: "evidence_id="+evidence.id+"&entity_id="+entity.id
+				})
+				.success(function(link_id){
+					datum.data.push(entity);
+					datum.count++;
+					$rootScope.$emit('evidence:changed', datum);
+				});
+
+				// datum.data.push(entity);
+				// datum.count++;
+				// // console.log(datum);
+				// $rootScope.$emit('evidence:changed', datum);
 				return;
 			}
 		})

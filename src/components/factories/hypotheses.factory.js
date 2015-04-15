@@ -25,6 +25,7 @@ function HypothesesFactory($http, $rootScope, EventsFactory, EvidencesFactory){
 	function initFactory(){
 		return $http.get('/data/get-all-hypothesis').then(function(response) {
 	   		data = response.data;
+	   		console.log("responseData", data);
 	   		$rootScope.$emit('hypotheses:retrieveDB', data);
 	    });
 	}

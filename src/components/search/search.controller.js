@@ -24,6 +24,12 @@ function searchCtrl($rootScope, $scope, HypothesesFactory, EntityFactory, Eviden
 		);
 		return temp;
 	}
+
+	$rootScope.$on('hypotheses:retrieveDB', function(event, args){
+		// 	$scope.achGroup = createGrouping();
+		// TODO: Need to refresh the initial list..
+	});
+
 	$rootScope.$on('hypothesis:added', function(event, args){
 		var temp = _.pick(args, 'title');
 		temp.type = '(Hypothesis)';

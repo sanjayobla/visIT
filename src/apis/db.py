@@ -43,6 +43,25 @@ class DB:
 			document_content["summary"] = []
 		return document_content
 
+	def get_all_evidences(self):
+		graph = Graph()
+		list_evidences = []
+
+		for evidence in graph.find("Evidence"):
+			print evidence
+			entity_list = []
+
+			for entity in graph.cypher.execute("MATCH(n:Evidence)--(e:Entity) where id(n) = "+`evidence._id`+" return e"):
+				entity_list.append({
+					"name": entity[0]['name'], "type": entity[0]['type'], "category": entity[0]['type']
+				})
+
+			list_evidences.append({
+				"title": evidence['name'], "id": evidence._id, "count": len(entity_list),
+				"data": entity_list
+			})
+		return list_evidences
+
 	def create_evidence(self, evidence_name):
 		#TODO: Associating a document with an evidence file..
 		graph = Graph()

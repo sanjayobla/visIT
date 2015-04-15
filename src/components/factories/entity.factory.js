@@ -2,19 +2,22 @@
 
 function EntityFactory($rootScope){
 	var data = [{
-		name: 'Pranav',
-		category: 'Name',
-		type: 'label-success',
+		name: 'Jack Varley',
+		category: 'PERSON',
+		type: 'PERSON',
+		id: 246,
 		loc: 0
 	},{
-		name: 'GT',
-		category: 'Organization',
-		type: 'label-info',
+		name: 'Eastern Washington',
+		category: 'LOCATION',
+		type: 'LOCATION',
+		id: 245,
 		loc: 1
 	},{
-		name: '2011',
-		category: 'Date',
-		type: 'label-warning',
+		name: 'Tuesday',
+		category: 'DATE',
+		type: 'DATE',
+		id: 249,
 		loc: 2
 	}];
 	

@@ -147,3 +147,18 @@ def create_hypothesis():
 @mod_data.route('/get-all-hypothesis')
 def get_all_hypothesis():
 	return json.dumps(GraphDB().get_all_hypothesis())
+
+@mod_data.route('/create-evidence', methods=["POST"])
+def create_evidence():
+	evidence_name = request.form.get("evidence", type=str)
+	return GraphDB().create_evidence(evidence_name)
+
+@mod_data.route("/get-all-evidences")
+def get_all_evidences():
+	return json.dumps(GraphDB().get_all_evidences())
+
+@mod_data.route("/add-entity-to-evidence", methods=["POST"])
+def add_entity_to_evidence():
+	entity_id = request.form.get("entity_id", type=str)
+	evidence_id = request.form.get("evidence_id", type=str)
+	return json.dumps(GraphDB().add_entity_to_evidence(entity_id, evidence_id, "default"))
