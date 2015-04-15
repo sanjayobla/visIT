@@ -63,7 +63,6 @@ def index():
 				file_line_content = filter(None, [re.sub(r'[^\x00-\x7F]+',' ', line.rstrip('\n\r')).strip() for line in open(input_file_name, 'r')])
 
 				for line in file_line_content:
-					print "-->"+ line+"<--"
 					file_content.append(tagger.tag_text(line))
 
 				document_id = GraphDB().create_document(os.path.basename(input_file_name), file_content, [], 0)
@@ -113,8 +112,7 @@ def get_document_list():
 def get_document(doc_id):
 	document_content = GraphDB().fetch_doc_content(doc_id)
 	document_content["content"] = [format_line(content_line) for content_line in document_content["content"]]
-
-	print document_content["content"], [format_line(content_line) for content_line in document_content["content"]]
+	# print document_content["content"], [format_line(content_line) for content_line in document_content["content"]]
 	return json.dumps(document_content)
 	# session_db = DBUtils().get_session_db()
 	# session_db.update({'ID':doc_id},{'$inc':{'__read_count': 1}},upsert=False, multi=False)
@@ -166,7 +164,12 @@ def add_entity_to_evidence():
 @mod_data.route('/add-evidence-to-hypothesis', methods=["POST"])
 def add_evidence_to_hypothesis():
 	evidence_id = request.form.get("evidence_id", type=str)
-	hypothesis_is = request.form.get("hypothesis_id", type=str)
+	hypothesis_id = request.form.get("hypothesis_id", type=str)
 	rel_type = request.form.get("rel_type", type=str)
-	rel_weight = (rel_type == "positive")? 1 : (rel_type == "negative"? -1 : 0)
+	rel_weight = 0
+	if rel_type == "positive":
+		rel_weight = 1
+	elif rel_type == "negative":
+		rel_weight = -1
+
 	return json.dumps(GraphDB().add_evidence_to_hypothesis(evidence_id, hypothesis_id, rel_type, rel_weight))

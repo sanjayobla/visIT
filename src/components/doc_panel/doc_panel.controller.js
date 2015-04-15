@@ -17,6 +17,7 @@ angular
 		$scope.content = [];
 		$scope.summary = [];
 		$scope.entity_columns = [];
+		$scope.entity_node_list = [];
 
 		/** Callbacks for the various data change events.. **/
 
@@ -30,11 +31,18 @@ angular
 			$scope.content = documentJSON['content'];
 			$scope.entities = documentJSON['entities'];
 			$scope.entity_columns = documentJSON['entity_columns'];
+			$scope.entity_node_list = documentJSON['entity_node_list'];
 			$scope.document_id = documentJSON['id'];
 		});
 
 
 		/** Click Events on the DOM elements **/
+		$scope.addEntities = function(add_as_evidence_flag){
+			console.log("Add entities button clicked with the flag", add_as_evidence_flag);
+			console.log($scope.entity_node_list);
+			$scope.$emit("appendEntities", $scope.entity_node_list);
+		}
+
 		$scope.loadDocument = function(doc_id){
 			var previous_doc_id = $scope.document_id;
 			DocumentDataFactory.fetchDocument(doc_id);

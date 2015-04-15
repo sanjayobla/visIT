@@ -35,6 +35,26 @@ function EvidencesFactory($http, $rootScope){
 		return data;
 	}
 
+	$rootScope.$on("appendEvidence", function(event, evidenceNode){
+		addData(evidenceNode);
+
+		list_entity_ids = [];
+		for (var entity_index in evidenceNode.data){
+			list_entity_ids.push(list_entities[entity_index]['id'])
+		}
+
+		return $http({
+			headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+	    	url: '/data/add-entities-to-evidence',
+	    	method: "POST",
+	    	data: "evidence_id="+evidence_id+"&entities="+JSON.stringify(list_entity_ids)
+		})
+		.success(function(link_id){
+			evidenceNode.count += len(list_entities);
+			$rootScope.$emit('evidence:changed', evidenceNode);
+		});
+	});
+
 	function addData(n){
 		return $http({
 	    	headers: {'Content-Type': 'application/x-www-form-urlencoded'},

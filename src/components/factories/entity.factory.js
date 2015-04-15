@@ -1,7 +1,7 @@
 'user strict'
 
 function EntityFactory($rootScope){
-	var data = [{
+	var data = [/*{
 		name: 'Jack Varley',
 		category: 'PERSON',
 		type: 'PERSON',
@@ -19,16 +19,23 @@ function EntityFactory($rootScope){
 		type: 'DATE',
 		id: 249,
 		loc: 2
-	}];
+	}*/];
 	
 	function getData(){
 		return data;
 	}
 
 	function addData(n){
+		console.log("Entity node added: ", n);
 		data.push(n);
 		$rootScope.$emit('entity:added', n);
 	}
+
+	$rootScope.$on("appendEntities", function(event, args){
+		for(var n in args){
+			addData(args[n]);
+		}
+	});
 
 	var factory = {
 		getData: getData,

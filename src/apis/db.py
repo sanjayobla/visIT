@@ -38,17 +38,38 @@ class DB:
 		if (document_node != None):
 			document_content["id"] = document_node["name"]
 			document_content["content"] = document_node["text"]
-			document_content["entities"] = []
-			document_content["entity_columns"] = []
 			document_content["summary"] = []
+
+			entities_dict = {}
+			entity_columns = []
+			entity_node_list = []
+			entity_index = 0
+
+			for entity in graph.cypher.execute("MATCH (d:Document)--(e:Entity) where id(d)= "+`document_node._id`+" return distinct(e)"):
+				entity_type = entity[0]['type']
+				if entity_type not in entities_dict:
+					entity_columns.append(entity_type)
+					entities_dict[entity_type] = []
+				entities_dict[entity_type].append(entity[0]['name'])
+
+				entity_node_list.append({
+					"name":  entity[0]['name'], "category": entity[0]['type'], "type": entity[0]['type'], 
+					"id": entity[0]._id, "loc": entity_index
+				})
+				entity_index += 1
+
+			document_content["entities"] = entities_dict
+			document_content["entity_columns"] = entity_columns
+			document_content["entity_node_list"] = entity_node_list
+				
 		return document_content
+
 
 	def get_all_evidences(self):
 		graph = Graph()
 		list_evidences = []
 
 		for evidence in graph.find("Evidence"):
-			print evidence
 			entity_list = []
 
 			for entity in graph.cypher.execute("MATCH(n:Evidence)--(e:Entity) where id(n) = "+`evidence._id`+" return e"):
@@ -80,23 +101,32 @@ class DB:
 			negative_data = []
 			neutral_data = []
 
-			for evidence in graph.cypher.execute("MATCH(n:Hypothesis)--(e:Evidence) where id(n) = "+`hypothesis._id`+" return e"):
+			# print hypothesis._id
+
+			for record in graph.cypher.execute("MATCH (h:Hypothesis)-[r]-(e:Evidence) where id(h)="+`hypothesis._id`+" return e, r.type, r.weight"):
+				# print record[0], record[1], record[2]
+				if record[1] == "positive":
+					positive_data.append(record[0]['name'])
+				elif record[1] == "negative":
+					negative_data.append(record[0]['name'])
+				else:
+					neutral_data.append(record[0]['name'])
 
 			list_hypothesis.append({
-				"title": hypothesis['name'], "id": hypothesis._id, "count": 0,
-				"overallWeights" : [],
+				"title": hypothesis['name'], "id": hypothesis._id, "count": len(positive_data) - len(negative_data),
+				"overallWeights": [len(positive_data), len(negative_data), len(neutral_data)],
 				"data": {
 					"positive": {
-					  "data": []
+						"data": positive_data
 					},
 					"negative": {
-					  "data": []
+						"data": negative_data
 					},
 					"neutral": {
-					  "data": []
+						"data": neutral_data
 					}
-				}
-			})
+				}	
+			});
 		return list_hypothesis
 
 	def create_hypothesis(self, hypothesis_name):
