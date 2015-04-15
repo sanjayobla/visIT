@@ -161,6 +161,18 @@ def add_entity_to_evidence():
 	evidence_id = request.form.get("evidence_id", type=str)
 	return json.dumps(GraphDB().add_entity_to_evidence(entity_id, evidence_id, "default"))
 
+@mod_data.route("/add-entities-to-evidence", methods=["POST"])
+def add_entities_to_evidence():
+	evidence_id = request.form.get("evidence_id", type=str)
+	entities = json.loads(request.form.get("entities"))
+
+	# print entities,type(entities),request.form.get("entities"), request.form
+	# print json.loads(entities), type(json.loads(entities))
+	for entity_id in entities:
+		# print entity_id, type(entity_id)
+		GraphDB().add_entity_to_evidence(entity_id, evidence_id, "default")
+	return json.dumps([])
+
 @mod_data.route('/add-evidence-to-hypothesis', methods=["POST"])
 def add_evidence_to_hypothesis():
 	evidence_id = request.form.get("evidence_id", type=str)
