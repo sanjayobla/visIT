@@ -24,11 +24,11 @@ function HypothesesFactory($http, $rootScope, EventsFactory, EvidencesFactory){
 
 	function initFactory(){
 		return $http.get('/data/get-all-hypothesis').then(function(response) {
-	   		// data = _.map(response.data, function(datum){
-	   		// 	datum.threshold = datum.threshold || 10;
-	   		// 	return datum;
-	   		// });
-				data = response.data;
+	   		var temp = _.map(response.data, function(datum){
+	   			datum.threshold = datum.threshold || 10;
+	   			return datum;
+	   		});
+				data = temp;
 	   		$rootScope.$emit('hypotheses:retrieveDB', response.data);
 	    });
 	}

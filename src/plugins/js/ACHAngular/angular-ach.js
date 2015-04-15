@@ -141,7 +141,7 @@ angular.module('achAngular', [])
 						drag.on('dragend', function(event){event.target.style.zIndex--;})
 
 						if(attrs.hypothesisBox){
-							console.log(scope);
+							console.log(el);
 							interact("[data-box-type='pnn']").dropzone({
 							    accept: '[data-box-type="evidence"]',
 							    overlap: 'pointer',
@@ -180,7 +180,8 @@ angular.module('achAngular', [])
 							      event.relatedTarget.setAttribute('data-y', y);
 							      var eviScope = angular.element(event.relatedTarget).scope();
 							      // console.log(eviScope);
-							      scope.addEvidence(eviScope.evidence, event.target.getAttribute('data-box-category').toLowerCase());
+							      var hypothesisScope = angular.element(event.target).scope();
+							      hypothesisScope.addEvidence(eviScope.evidence, event.target.getAttribute('data-box-category').toLowerCase());
 							      // console.log(scope);
 							      // return alert("Dropped " + (event.relatedTarget.getAttribute('data-box-type')) + " in " + (event.target.getAttribute('data-box-category')) + " under Hypothesis" + (event.target.getAttribute('data-parent-box')));
 							    },
