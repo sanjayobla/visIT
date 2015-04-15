@@ -71,6 +71,7 @@ angular.module('zyngaScroller', [])
 								if(angular.element(e.target).hasClass('panel-heading') 
 									|| angular.element(e.target).hasClass('entity')
 									|| angular.element(e.target).hasClass('title')
+									|| angular.element(e.target).hasClass('dropzone')
 									|| angular.element(e.target)[0].nodeName === 'circle'
 									|| angular.element(e.target).hasClass('label')) return;
 
