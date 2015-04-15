@@ -13,6 +13,7 @@ angular.module('achAngular', [])
 						var hBox = d3Components.hypothesisBox()
 													.number(+attrs.hypothesisBox)
 													.title(scope.hypothesis.title)
+													.onSlide(scope.onSlide)
 													.removeEvidenceCb(scope.removeEvidence);
 						// console.log(d3.selectAll(el));
 						scope.$watch('hypothesis', function(o, n){
