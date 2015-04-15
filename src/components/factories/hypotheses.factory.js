@@ -24,8 +24,10 @@ function HypothesesFactory($http, $rootScope, EventsFactory, EvidencesFactory){
 
 	function initFactory(){
 		return $http.get('/data/get-all-hypothesis').then(function(response) {
-	   		data = response.data;
-	   		console.log("responseData", data);
+	   		data = _.map(response.data, function(datum){
+	   			datum.threshold = datum.threshold || 10;
+	   			return datum;
+	   		});
 	   		$rootScope.$emit('hypotheses:retrieveDB', data);
 	    });
 	}
@@ -114,11 +116,22 @@ function addData(n){
 
 	}
 
+	function changeThresholdOf(hypothesis, data){
+		if(Math.abs(hypothesis.threshold - Math.round(data)) > 1){
+			hypothesis.threshold = Math.round(data);
+			// console.log('threshold changed')
+			$rootScope.$emit('hypothesis:thresholdChanged', hypothesis, data);
+			return;
+		}
+		// console.log('threshold unchanged')
+	}
+
 	var factory = {
 		getData: getData,
 		addData: addData,
 		addEvidenceTo: addEvidenceTo,
-		removeEvidenceFrom:removeEvidenceFrom
+		removeEvidenceFrom:removeEvidenceFrom,
+		changeThresholdOf:changeThresholdOf
 	};
 
 	return factory;

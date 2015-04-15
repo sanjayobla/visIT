@@ -8,4 +8,5 @@ env/
 src/index_serve.html
 src/app/vendor.css
 src/app/index.css
+src/app/vendor.css
 src/upload/

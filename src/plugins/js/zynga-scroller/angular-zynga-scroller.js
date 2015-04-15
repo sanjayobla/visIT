@@ -67,9 +67,10 @@ angular.module('zyngaScroller', [])
 								if (e.target.tagName.match(/input|textarea|select/i)) {
 									return;
 								}
-								// console.log(angular.element(e.target));
+								console.log(angular.element(e.target));
 								if(angular.element(e.target).hasClass('panel-heading') 
 									|| angular.element(e.target).hasClass('entity')
+									|| angular.element(e.target)[1].nodeName === 'circle'
 									|| angular.element(e.target).hasClass('label')) return;
 
 								scroller.doTouchStart([{

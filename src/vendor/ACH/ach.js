@@ -39,21 +39,24 @@ ACHBar = function() {
 module.exports = ACHBar;
 
 },{}],2:[function(require,module,exports){
-var ACHBar, pnnBox;
+var ACHBar, pnnBox, sliderControl;
 
 pnnBox = require('./pnnBox');
 
 ACHBar = require('./ACHBar');
 
+sliderControl = require('./sliderControl');
+
 window.d3Components || (window.d3Components = {});
 
 d3Components.hypothesisBox = function() {
-  var chart, headingButtons, height, hideBody, hideDivStyle, hypothesis, label, number, removeEvidenceCb, showDivStyle, title, width;
+  var chart, headingButtons, height, hideBody, hideDivStyle, hypothesis, label, number, onSlide, removeEvidenceCb, showDivStyle, title, width;
   width = 400;
   height = 400;
   number = 0;
   title = 'Anand Framed Roger Rabbit';
   hypothesis = null;
+  onSlide = function(selection) {};
   hideDivStyle = {
     display: 'none',
     visibility: 'hidden'
@@ -92,7 +95,7 @@ d3Components.hypothesisBox = function() {
   };
   chart.initHeading = function(selection) {
     return selection.each(function(data) {
-      var heading;
+      var gSliderThreshold, heading, sliderDiv, sliderThreshold;
       heading = selection.select('.panel-heading');
       if (heading.empty()) {
         heading = selection.append('div').attr('class', 'panel-heading').style({
@@ -120,12 +123,17 @@ d3Components.hypothesisBox = function() {
           return hideBody = false;
         }
       });
-      headingButtons.settings = heading.append('i').attr('class', 'fa fa-cog pull-right').style({
-        'margin': '0px 5px'
-      });
-      headingButtons.lineChart = heading.append('i').attr('class', 'fa fa-line-chart pull-right').style({
-        'margin': '0px 5px'
-      });
+      sliderDiv = selection.append('svg').attr('class', 'slider-div');
+      sliderDiv.style('height', '30px').style('width', width);
+      sliderThreshold = sliderControl().domain([5, 30]).width(width).onSlide(onSlide);
+      gSliderThreshold = sliderDiv.selectAll('g.slider-t').data([15]).enter().append('g').attr({
+        transform: function() {
+          var dx, dy;
+          dx = 15;
+          dy = 16;
+          return "translate(" + [dx, dy] + ")";
+        }
+      }).call(sliderThreshold);
       return headingButtons.label = heading.append('span').attr('class', 'label label-danger pull-right').style({
         'margin': '-1px 5px'
       }).text(function(d) {
@@ -139,6 +147,7 @@ d3Components.hypothesisBox = function() {
     if (body.empty()) {
       body = selection.append('div').attr('class', 'panel-body');
     }
+    body.style('padding-top', 0);
     return body.call(chart.initPNNBoxes);
   };
   chart.initPNNBoxes = function(selection) {
@@ -226,12 +235,19 @@ d3Components.hypothesisBox = function() {
     removeEvidenceCb = accessorFunc;
     return chart;
   };
+  chart.onSlide = function(onSliderFunction) {
+    if (!arguments.length) {
+      return onSlide;
+    }
+    onSlide = onSliderFunction;
+    return chart;
+  };
   return chart;
 };
 
 module.exports = d3Components.hypothesisBox;
 
-},{"./ACHBar":1,"./pnnBox":3}],3:[function(require,module,exports){
+},{"./ACHBar":1,"./pnnBox":3,"./sliderControl":4}],3:[function(require,module,exports){
 var pnnBox;
 
 pnnBox = function() {
@@ -371,6 +387,98 @@ pnnBox = function() {
 };
 
 module.exports = pnnBox;
+
+},{}],4:[function(require,module,exports){
+var sliderControl;
+
+sliderControl = function() {
+  var chart, domain, onSlide, width;
+  width = 600;
+  domain = [0, 100];
+  onSlide = function(selection) {};
+  chart = function(selection) {
+    return selection.each(function(data) {
+      var drag, group, handle, moveHandle, number, posScale;
+      moveHandle = function(d) {
+        var cx;
+        cx = +d3.select(this).attr('cx') + d3.event.dx;
+        number.text(Math.round(posScale.invert(cx)));
+        if (0 < cx && cx < width - 100) {
+          return d3.select(this).data([posScale.invert(cx)]).attr({
+            cx: cx
+          }).call(onSlide);
+        }
+      };
+      group = d3.select(this);
+      group.selectAll('line').data([data]).enter().append('line').call(chart.initLine);
+      handle = group.selectAll('circle').data([data]).enter().append('circle').call(chart.initHandle);
+      posScale = d3.scale.linear().domain(domain).range([0, width - 100]);
+      handle.attr({
+        cx: function(d) {
+          return posScale(d);
+        },
+        'class': 'threshold-handle'
+      });
+      number = group.selectAll('text').data([data]).enter().append('text');
+      number.text(function(d) {
+        return d;
+      }).attr({
+        transform: function() {
+          var dx, dy;
+          dx = width - 50;
+          dy = 6;
+          return "translate(" + [dx, dy] + ")";
+        }
+      });
+      drag = d3.behavior.drag().on('drag', moveHandle);
+      return handle.call(drag);
+    });
+  };
+  chart.initLine = function(selection) {
+    return selection.attr({
+      x1: 2,
+      x2: width - 4 - 100,
+      stroke: '#777',
+      'stroke-width': 4,
+      'stroke-linecap': 'round'
+    });
+  };
+  chart.initHandle = function(selection) {
+    return selection.attr({
+      cx: function(d) {
+        return width / 2;
+      },
+      r: 6,
+      fill: '#aaa',
+      stroke: '#222',
+      'stroke-width': 2
+    });
+  };
+  chart.width = function(value) {
+    if (!arguments.length) {
+      return width;
+    }
+    width = value;
+    return chart;
+  };
+  chart.domain = function(value) {
+    if (!arguments.length) {
+      return domain;
+    }
+    domain = value;
+    return chart;
+  };
+  chart.onSlide = function(onSliderFunction) {
+    if (!arguments.length) {
+      return onSlide;
+    }
+    onSlide = onSliderFunction;
+    return chart;
+  };
+  return chart;
+};
+
+module.exports = sliderControl;
 
 },{}]},{},[2]);
 
