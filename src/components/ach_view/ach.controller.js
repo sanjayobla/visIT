@@ -45,11 +45,11 @@ function hypothesisCtrl($rootScope, $scope, HypothesesFactory){
 	$scope.onSlide = function(selection){
 		selection.each(function(data){
 			HypothesesFactory.changeThresholdOf($scope.hypothesis, data);
-			console.log(data);
+			console.log($scope.hypothesis);
 		})
 	}
 	$scope.addEvidence = function(evidence, pnnType){
-		// console.log($scope.evidences[+evidence]);
+		console.log('Add Evidence', arguments, $scope.hypothesis);
 		$scope.$apply(function(){
 			HypothesesFactory.addEvidenceTo($scope.hypothesis, evidence, pnnType);
 			// $scope.hypothesis.data[pnnType].data.push(evidence.title);
