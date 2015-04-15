@@ -519,7 +519,7 @@ window.d3Components || (window.d3Components = {});
 d3Components.evidenceBox = function() {
   var addPopoutHypothesisList, addToHypothesisCb, chart, evidences, headingButtons, height, hideBody, hideDivStyle, label, layers, number, showDivStyle, title, width;
   width = 250;
-  height = 300;
+  height = 90;
   number = 0;
   title = 'Evidence 1 (110203766537899.txt)';
   layers = {
@@ -662,6 +662,10 @@ d3Components.evidenceBox = function() {
     if (body.empty()) {
       body = selection.append('div').attr('class', 'panel-body dropzone');
     }
+    body.style({
+      height: height + 'px',
+      'overflow-y': 'scroll'
+    });
     return body.call(chart.initEntities);
   };
   chart.initEntities = function(selection) {
