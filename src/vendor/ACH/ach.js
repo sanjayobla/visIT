@@ -343,17 +343,30 @@ pnnBox = function() {
   };
   chart.initEvidences = function(selection) {
     return selection.each(function(data) {
-      var evidence, plusMinus, trash;
-      evidence = d3.select(this).selectAll('div.evidence').data(data);
-      evidence.enter().append('div').attr('class', 'evidence').style({
+      var evidence, evidenceDiv, evidenceText, trash;
+      evidenceDiv = d3.select(this).selectAll('div.evidence').data(data);
+      evidence = evidenceDiv.enter().append('div').attr('class', 'evidence').style({
         margin: '5px 0'
       });
-      evidence.text(function(d) {
+      evidenceText = evidence.selectAll('span.evidence-text');
+      if (evidenceText.empty()) {
+        evidenceText = evidence.append('span').attr('class', 'evidence-text').style({
+          width: width + "px",
+          'white-space': 'nowrap',
+          overflow: 'hidden',
+          'text-overflow': 'ellipsis',
+          float: 'left',
+          display: 'block'
+        });
+      }
+      evidenceText.text(function(d) {
         return d;
       });
-      evidence.exit().remove();
-      trash = evidence.call(appendTrash);
-      return plusMinus = evidence.call(appendPlusMinus);
+      trash = evidence.selectAll('i.fa-trash');
+      if (trash.empty()) {
+        trash = evidence.call(appendTrash);
+      }
+      return evidenceDiv.exit().remove();
     });
   };
   chart.width = function(value) {

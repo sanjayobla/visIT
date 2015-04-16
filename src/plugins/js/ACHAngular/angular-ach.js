@@ -18,7 +18,7 @@ angular.module('achAngular', [])
 													.removeEvidenceCb(scope.removeEvidence);
 						// console.log(d3.selectAll(el));
 						scope.$watch('hypothesis', function(o, n){
-							// console.log(o, n);
+							console.log(o, n);
 							var box = d3.selectAll(el).data([scope.hypothesis]).call(hBox);
 						}, true);
 					}
