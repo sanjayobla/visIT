@@ -172,4 +172,15 @@ angular.module('inspinia')
 			return $filter('orderBy')($scope.data, [$scope.firstOrderPredicate, $scope.orderByPredicate]);
 		}
 
+		$scope.addToBrowser = function(item){
+			console.log(item);
+			$scope.$emit('appendEntities', [{
+				'name': item.name,
+				'category' : item.type,
+				'type': item.type,
+				'id': item.id,
+				'loc': 0
+			}])
+		}
+
 	})

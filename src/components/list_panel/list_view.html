@@ -55,13 +55,17 @@
       <div class="list-scroller"  id="parentContainer{{list_index}}" style="height: {{restrictedHeight}}px;">
         <div class="js-items-list viewport real list-restrict" style="overflow-x: hidden; overflow-y: auto; max-height: {{restrictedHeight}}px;" ng-class="{true: 'list-restrict-full', false:'list-restrict'}[totalRecords < (restrictedHeight/21)]">
           <ul>
-            <li class="row list-row" sf-virtual-repeat="item in listData">
+            <li class="row list-row" sf-virtual-repeat="item in listData" ng-mouseover="item.hover=true" ng-mouseout="item.hover=false" ng-init="item.hover=false">
               <div class="col-xs-2 bar-container" title="{{item.count}}">
                 <div class="bar" ng-style="{'width': (1-item.frequency) * 160 +'%' };"></div>
               </div>
-              <span class="col-xs-10 padding-right-25 ellipsize {{align}}" ng-style="{'background-color': item.background};" ng-click="selectItem(item.name, $event, $index);"> {{item.name}}
+              <span class="col-xs-8 padding-right-25 ellipsize {{align}}" ng-style="{'background-color': item.background};" ng-click="selectItem(item.name, $event, $index);"> {{item.name}}
                 <sup ng-if="item.hasStrength == 1">{{item.strengthCount}}</sup>
               </span>
+              
+              <button type="button" class="btn btn-default btn-xs btn-xs-item js-tooltip js-align-right" data-toggle="tooltip" data-placement="top" title="Add to Entity Browser" ng-click="addToBrowser(item)" ng-show="item.hover">
+                <span class="glyphicon glyphicon-item glyphicon-arrow-right"></span>
+              </button>
             </li>
           </ul>
         </div>
