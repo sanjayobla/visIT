@@ -20,7 +20,20 @@ ACHBar = function() {
         width: function(d) {
           return ((d / d3.sum(data)) * 100) + "%";
         },
-        display: 'inline-block',
+        display: function(d) {
+          if (d === 0) {
+            return 'none';
+          } else {
+            return 'inline-block';
+          }
+        },
+        visibility: function(d) {
+          if (d === 0) {
+            return 'hidden';
+          } else {
+            return 'visible';
+          }
+        },
         'line-height': '30px',
         margin: 0,
         height: height + 'px',
