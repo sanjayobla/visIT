@@ -92,45 +92,45 @@ function searchCtrl($rootScope, $scope, HypothesesFactory, EntityFactory, Eviden
 	$scope.achGroups = [];
 
 	$scope.fOpen = function() {
-	    console.log( 'On-open' );
+	    // console.log( 'On-open' );
 	}
 
 	$scope.fClose = function() {
-	    console.log( 'On-close' );
+	    // console.log( 'On-close' );
 	    // console.log(hypotheses);
 	}    
 
 	$scope.fClick = function( data ) {           
-	    console.log( 'On-item-click' );        
-	    console.log( 'On-item-click - data:' );        
+	    // console.log( 'On-item-click' );        
+	    // console.log( 'On-item-click - data:' );        
 	    // console.log( data, $scope.achResults );
-	    // $rootScope.$emit('globalSearch:active',$scope.achResults);
+	    $rootScope.$emit('globalSearch:active',$scope.achResults);
 	}    
 
 	$scope.fSelectAll = function() {
-	    console.log( 'On-select-all' );
-	    // $rootScope.$emit('globalSearch:active',$scope.achResults);
+	    // console.log( 'On-select-all' );
+	    $rootScope.$emit('globalSearch:active',$scope.achResults);
 	}
 
 	$scope.fSelectNone = function() {
-	    console.log( 'On-select-none' );
-	    // $rootScope.$emit('globalSearch:active',[]);
+	    // console.log( 'On-select-none' );
+	    $rootScope.$emit('globalSearch:active',[]);
 	}
 
 	$scope.fReset = function() {
-	    console.log( 'On-reset' );
-	    // $rootScope.$emit('globalSearch:active',[]);
+	    // console.log( 'On-reset' );
+	    $rootScope.$emit('globalSearch:active',[]);
 	}        
 
 	$scope.fClear = function() {
-	    console.log( 'On-clear' );
-	    // $rootScope.$emit('globalSearch:active',$scope.achResults);
+	    // console.log( 'On-clear' );
+	    $rootScope.$emit('globalSearch:active',$scope.achResults);
 	}
 
 	$scope.fSearchChange = function( data ) {
-	    console.log( 'On-search-change' );
-	    console.log( 'On-search-change - keyword: ' + data.keyword );
-	    console.log( 'On-search-change - result: ' );
+	    // console.log( 'On-search-change' );
+	    // console.log( 'On-search-change - keyword: ' + data.keyword );
+	    // console.log( 'On-search-change - result: ' );
 	    console.log( data.result );
 	}
 }

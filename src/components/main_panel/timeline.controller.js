@@ -20,19 +20,54 @@ function timelineCtrl($scope, EventsFactory){
 	      "key": "hypothesis 0",
 	      "type": "line",
 	      "axis": "y",
-	      "color": "#1f77b4"
+	      "color": "#a6cee3"
 	    },
 	    {
 	      "key": "hypothesis 1",
 	      "type": "line",
 	      "axis": "y",
-	      "color": "#ff7f0e"
+	      "color": "#1f78b4"
 	    },
 	    {
 	      "key": "hypothesis 2",
 	      "type": "line",
 	      "axis": "y",
-	      "color": "#2ca02c"
+	      "color": "#b2df8a"
+	    },{
+	      "key": "hypothesis 3",
+	      "type": "line",
+	      "axis": "y",
+	      "color": "#33a02c"
+	    },{
+	      "key": "hypothesis 4",
+	      "type": "line",
+	      "axis": "y",
+	      "color": "#fb9a99"
+	    },{
+	      "key": "hypothesis 5",
+	      "type": "line",
+	      "axis": "y",
+	      "color": "#e31a1c"
+	    },{
+	      "key": "hypothesis 6",
+	      "type": "line",
+	      "axis": "y",
+	      "color": "#fdbf6f"
+	    },{
+	      "key": "hypothesis 7",
+	      "type": "line",
+	      "axis": "y",
+	      "color": "#ff7f00"
+	    },{
+	      "key": "hypothesis 8",
+	      "type": "line",
+	      "axis": "y",
+	      "color": "#cab2d6"
+	    },{
+	      "key": "hypothesis 9",
+	      "type": "line",
+	      "axis": "y",
+	      "color": "#6a3d9a"
 	    }
 	  ],
 	  "subchart": {
