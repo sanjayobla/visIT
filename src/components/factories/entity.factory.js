@@ -26,7 +26,7 @@ function EntityFactory($rootScope){
 	}
 
 	function addData(n){
-		console.log("Entity node added: ", n);
+		// console.log("Entity node added: ", _.pick(n, 'name'));
 		data.push(n);
 		$rootScope.$emit('entity:added', n);
 	}

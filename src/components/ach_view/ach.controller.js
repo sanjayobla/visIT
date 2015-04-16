@@ -54,11 +54,11 @@ function hypothesisCtrl($rootScope, $scope, HypothesesFactory){
 	$scope.onSlide = function(selection){
 		selection.each(function(data){
 			HypothesesFactory.changeThresholdOf($scope.hypothesis, data);
-			console.log($scope.hypothesis);
+			// console.log($scope.hypothesis);
 		})
 	}
 	$scope.addEvidence = function(evidence, pnnType){
-		console.log('Add Evidence', arguments, $scope.hypothesis);
+		// console.log('Add Evidence', arguments, $scope.hypothesis);
 		$scope.$apply(function(){
 			HypothesesFactory.addEvidenceTo($scope.hypothesis, evidence, pnnType);
 			// $scope.hypothesis.data[pnnType].data.push(evidence.title);
@@ -74,7 +74,7 @@ function hypothesisCtrl($rootScope, $scope, HypothesesFactory){
 function evidenceCtrl($rootScope, $scope, EvidencesFactory){
 	$scope.inSearch = 0;
 	$rootScope.$on('globalSearch:active', function(evt, results){
-		console.log(results);
+		// console.log(results);
 		if(results.length === 0) {
 			$scope.inSearch = 0;
 		}
@@ -103,8 +103,25 @@ function evidenceCtrl($rootScope, $scope, EvidencesFactory){
 	}
 }
 
+function entityCtrl($rootScope, $scope, EntityFactory){
+	$scope.inSearch = 0;
+	$rootScope.$on('globalSearch:active', function(evt, results){
+		// console.log(results);
+		if(results.length === 0) {
+			$scope.inSearch = 0;
+		}
+		else{
+			$scope.inSearch = _.findIndex(results, function(data) {
+			  return $scope.entity.name == data.title;
+			});
+		}
+		// console.log('found', found);
+	});
+}
+
 angular
 	.module('inspinia')
 	.controller('achCtrl', achCtrl)
 	.controller('hypothesisCtrl', hypothesisCtrl)
 	.controller('evidenceCtrl', evidenceCtrl)
+	.controller('entityCtrl', entityCtrl)
