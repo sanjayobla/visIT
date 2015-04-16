@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+from __future__ import division
 from py2neo import Graph, Path, Node, Relationship, neo4j
 
 class DB:
@@ -160,4 +162,91 @@ class DB:
 	def remove_evidence_from_hypothesis(self, evidence, hypothesis_id):
 		graph = Graph()
 		graph.cypher.execute("MATCH (h:Hypothesis)-[r]-(e:Evidence) where id(h)="+hypothesis_id+" and e.name=\""+evidence+"\" delete r")
+
+	def retrieve_list_entities(self):
+		graph = Graph()
+
+		# for record in graph.cypher.execute("match (n:Entity) return n"):
+		# 	print record
+		entities_list = []
+		
+		all_list_items = []
+		all_entities_list = []
+		all_max_count = -1
+
+		for entity_type in graph.cypher.execute("MATCH(ent:Entity) return distinct(ent.type)"):
+			entity_list_items = []
+			list_items = []
+
+			#(e:Evidence)-[m]- ++ , count(distinct e)
+			max_count  = -1
+			for entity_info in graph.cypher.execute("match (n:Entity)-[r]-(d:Document) where n.type='"+entity_type[0]+"' return n.name, id(n), count(distinct d)"):
+				entity_count = int(entity_info[2])
+				
+				if max_count < entity_count:
+					max_count = entity_count
+					
+					if all_max_count < entity_count:
+						all_max_count = entity_count
+
+				entity_list_items.append({
+					"count": int(entity_info[2]),
+					"name": entity_info[0],
+					"id": entity_info[1],
+					"type": entity_type[0],
+					"strength": 0,
+					"hasStrength": 0,
+					"strengthCount": 0
+				})
+
+				all_list_items.append({
+					"count": int(entity_info[2]),
+					"name": entity_info[0],
+					"id": entity_info[1],
+					"type": entity_type[0],
+					"strength": 0,
+					"hasStrength": 0,
+					"strengthCount": 0
+				})
+			
+			for entity_info in entity_list_items:
+				entity_info["frequency"] = entity_info["count"]/max_count
+				list_items.append(entity_info);
+
+			entities_list.append({
+				"key": entity_type[0],
+				"values": list_items
+			});
+
+		for all_entity in all_list_items:
+			all_entity['frequency'] = all_entity['count']/all_max_count
+			all_entities_list.append(all_entity)
+
+		entities_list.append({
+			"key": "ALL",
+			"values": all_entities_list
+		});
+
+		return entities_list
+
+	# def retrieve_entity_dist(self):
+	# 	graph = Graph()
+	# 	result_json = []
+	# 	max_count = 0
+	# 	for record in graph.cypher.execute("Match(ent:Entity) return distinct(ent.type)"):
+	# 		if(record[0]!=''):
+	# 			entity_record = {}
+	# 			entity_record["entity_type"] = record[0]
+	# 			for doc_count in graph.cypher.execute("MATCH(doc:Document)--(ent:Entity) WHERE ent.type = '"+record[0]+"' return count(distinct doc)"):
+	# 				entity_record["doc_count"] = doc_count[0]
+	# 			for evid_count in graph.cypher.execute("MATCH(evid:Evidence)--(ent:Entity) WHERE ent.type = '"+record[0]+"' return count(distinct evid)"):
+	# 				entity_record["evid_count"] = evid_count[0]
+	# 			entity_record["total_count"] = int(entity_record["doc_count"]) + int(entity_record["evid_count"])
+	# 			if int(entity_record["total_count"]) > max_count:
+	# 				max_count = entity_record["total_count"]
+	# 			result_json.append(entity_record)
+	# 	for record in result_json:
+	# 		record["norm_count"] = record["total_count"]/max_count
+		
+	# 	return result_json
 

@@ -3,6 +3,7 @@ from __future__ import division
 #Flask dependencies
 from flask import Blueprint, request, render_template, redirect, url_for, session, g
 from ..utils import Utils as DBUtils
+from ..db import DB as GraphDB
 from src import app
 
 import json
@@ -41,53 +42,60 @@ def get_columns_with_list_content():
 			list_columns.append(column_name)
 	return list_columns
 
+@mod_list.route("/test")
+def test():
+	# return json.dumps(GraphDB().retrieve_entity_dist())
+	return json.dumps(GraphDB().retrieve_list_entities())
+
 @mod_list.route('/get-list-entity-types')
 def get_list_entity_types():
 	return json.dumps(["ORGANIZATION", "PERSON", "LOCATION", "DATE", "MONEY", "PERCENTAGE", "TIME", "ALL"])
 
 @mod_list.route('/get-list-contents')
 def get_list_contents():
-	headers = get_column_list()
-	session_db = DBUtils().get_session_db()
-	list_columns = get_columns_with_list_content()
+	# headers = get_column_list()
+	# session_db = DBUtils().get_session_db()
+	# list_columns = get_columns_with_list_content()
 
-	all_data = []
-	for header in headers:
-		aggregate_array = []
+	# all_data = []
+	# for header in headers:
+	# 	aggregate_array = []
 		
-		if header in list_columns:
-			aggregate_array.append({ '$unwind' : '$'+header })
+	# 	if header in list_columns:
+	# 		aggregate_array.append({ '$unwind' : '$'+header })
 		
-		aggregate_array.extend([
-				{'$match':{ header : {'$ne' : ''} }}, 
-				{'$group':{'_id':'$'+header,'count': { '$sum': 1 }}},
-				{'$group':{'_id':0, 'maxCount':{'$max':'$count'}, 'docs':{'$push':'$$ROOT'}}},
-				{'$project':{'_id':0, 'docs':{'$map':{'input':'$docs','as':'e', 'in':{'_id':'$$e._id', 'count':'$$e.count', 'rate':{'$divide':["$$e.count", "$maxCount"]}}}}}},
-				{'$unwind':'$docs'},
-				{'$project':{'name':'$docs._id', 'count':'$docs.count','frequency':'$docs.rate','strength':{'$literal':0},'hasStrength':{'$literal':0},'strengthCount':{'$literal':0}}}
-		])
+	# 	aggregate_array.extend([
+	# 			{'$match':{ header : {'$ne' : ''} }}, 
+	# 			{'$group':{'_id':'$'+header,'count': { '$sum': 1 }}},
+	# 			{'$group':{'_id':0, 'maxCount':{'$max':'$count'}, 'docs':{'$push':'$$ROOT'}}},
+	# 			{'$project':{'_id':0, 'docs':{'$map':{'input':'$docs','as':'e', 'in':{'_id':'$$e._id', 'count':'$$e.count', 'rate':{'$divide':["$$e.count", "$maxCount"]}}}}}},
+	# 			{'$unwind':'$docs'},
+	# 			{'$project':{'name':'$docs._id', 'count':'$docs.count','frequency':'$docs.rate','strength':{'$literal':0},'hasStrength':{'$literal':0},'strengthCount':{'$literal':0}}}
+	# 	])
 
-		content_list = []
-		command_cursor = session_db.aggregate(aggregate_array)
+	# 	content_list = []
+	# 	command_cursor = session_db.aggregate(aggregate_array)
 
-		for obj in command_cursor:
-			content_list.append(obj)
+	# 	for obj in command_cursor:
+	# 		content_list.append(obj)
 
-		if content_list:
-			if max([item['count'] for item in content_list]) == 1:
-				temp_list = content_list
-				content_list = []
-				new_count = 1/len(temp_list)
-				for dict_item in temp_list:
-					dict_item['frequency'] = new_count
-					content_list.append(dict_item)
+	# 	if content_list:
+	# 		if max([item['count'] for item in content_list]) == 1:
+	# 			temp_list = content_list
+	# 			content_list = []
+	# 			new_count = 1/len(temp_list)
+	# 			for dict_item in temp_list:
+	# 				dict_item['frequency'] = new_count
+	# 				content_list.append(dict_item)
 
-			all_data.append({
-				"key": header,
-				"values": content_list
-			})
+	# 		all_data.append({
+	# 			"key": header,
+	# 			"values": content_list
+	# 		})
 
-	return json.dumps(all_data)
+	# return json.dumps(all_data)
+	return json.dumps(GraphDB().retrieve_list_entities())
+	# return json.dumps([])
 
 @mod_list.route('/get-updated-list-contents', methods=["POST"])
 def get_updated_list_contents():
