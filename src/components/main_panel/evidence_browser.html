@@ -1,5 +1,5 @@
 <div id="content" ng-controller="achCtrl as ach">
     <div ng-repeat="hypothesis in hypotheses" hypothesis-box="$index" interact="dnd" data="hypothesis" ng-controller="hypothesisCtrl as hp" ng-class="{dim: inSearch==-1}"></div>
     <div ng-repeat="evidence in evidences" evidence-box="$index" interact="dnd" data="evidence" ng-controller="evidenceCtrl as ev" ng-class="{dim: inSearch==-1}"></div>
-    <span ng-repeat="entity in entities" interact="drag" class="entity outside drag-drop label {{entity.type}}" data-type="entity" entity-name="{{entity.name}}" style="{{getStyleForEntity(entity)}}">{{entity.name}}</span>
+    <span ng-repeat="entity in entities" interact="drag" class="entity outside drag-drop label {{entity.type}}" data-type="entity" ng-class="{dim: inSearch==-1}" ng-controller="entityCtrl" entity-name="{{entity.name}}" style="{{getStyleForEntity(entity)}}">{{entity.name}}</span>
 </div>
