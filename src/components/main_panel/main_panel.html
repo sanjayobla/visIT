@@ -11,7 +11,7 @@
 
                     <div class="panel-body">
                         <tabset>
-                            <tab heading="Entity Browser" ng-controller="achParentCtrl as achParent">
+                            <tab heading="ACH Browser" ng-controller="achParentCtrl as achParent">
                                 <div class="btn-group add" dropdown="">
                                     <button type="button" class="btn btn-primary dropdown-toggle" dropdown-toggle="" aria-haspopup="true" aria-expanded="false">
                                         Add <span class="caret"></span>
@@ -28,7 +28,7 @@
                                 </div>
                                 <form class="ach-search">
                                     <div class="form-group">
-                                        <input type="text" ng-model="objectName" placeholder="Object of Interest" class="form-control" name="ach-search">
+                                        <input type="text" ng-model="objectName" placeholder="Evidence/Hypothesis Name" class="form-control" name="ach-search">
                                     </div>
                                 </form>
                                 <div infinite-canvas id="container" ng-include="'components/main_panel/evidence_browser.html'"></div>
