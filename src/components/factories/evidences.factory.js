@@ -26,7 +26,7 @@ function EvidencesFactory($http, $rootScope){
 	function initFactory(){
 		return $http.get('/data/get-all-evidences').then(function(response) {
 	   		data = response.data;
-	   		console.log("responseData", data);
+	   		// console.log("responseData", data);
 	   		$rootScope.$emit('evidences:retrieveDB', data);
 	    });
 	}
@@ -37,7 +37,7 @@ function EvidencesFactory($http, $rootScope){
 
 	$rootScope.$on("appendEvidence", function(event, evidenceNode){
 		addData(evidenceNode, function(evidence_id){
-			console.log("Inside callbackFN");
+			// console.log("Inside callbackFN");
 			list_entity_ids = [];
 			for (var entity_index in evidenceNode.data){
 				list_entity_ids.push(evidenceNode.data[entity_index]['id'])
@@ -65,7 +65,7 @@ function EvidencesFactory($http, $rootScope){
         .success(function(evidence_id) {
         	n.id = evidence_id;
         	data.push(n);
-        	console.log("Node pushed", n);
+        	// console.log("Node pushed", n);
         	$rootScope.$emit('evidence:added', n);
 
         	if(callbackFN){
@@ -79,7 +79,7 @@ function EvidencesFactory($http, $rootScope){
 	}
 
 	function addEntityTo(evidence, entity){
-		console.log("Adding ", entity," to ", evidence);
+		// console.log("Adding ", entity," to ", evidence);
 		_.forEach(data, function(datum){
 			if(evidence.title === datum.title){
 				// console.log(_.some(datum.data, 'name', entity.name), datum, entity);
@@ -106,10 +106,19 @@ function EvidencesFactory($http, $rootScope){
 		})
 	}
 
+	function deleteAll(){
+		return $http.get('/data/delete-all-evidences').then(function(response) {
+	   		data.length = 0;
+	   		$rootScope.$emit('evidences:retrieveDB', data);
+	   		$rootScope.$emit('evidencesDeleted');
+	    });
+	}
+
 	var factory = {
 		getData: getData,
 		addData: addData,
-		addEntityTo: addEntityTo
+		addEntityTo: addEntityTo,
+		deleteAll: deleteAll
 	};
 
 	return factory;

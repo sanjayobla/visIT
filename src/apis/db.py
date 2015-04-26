@@ -163,6 +163,17 @@ class DB:
 		graph = Graph()
 		graph.cypher.execute("MATCH (h:Hypothesis)-[r]-(e:Evidence) where id(h)="+hypothesis_id+" and e.name=\""+evidence+"\" delete r")
 
+	def delete_all_evidences(self):
+		graph = Graph()
+		graph.cypher.execute("MATCH (v:Evidence)-[r]-(e:Entity) delete r")
+		graph.cypher.execute("MATCH (v:Evidence)-[r]-(h:Hypothesis) delete r")
+		graph.cypher.execute("MATCH (v:Evidence) delete v")
+
+	def delete_all_hypotheses(self):
+		graph = Graph()
+		graph.cypher.execute("MATCH (v:Evidence)-[r]-(h:Hypothesis) delete r")
+		graph.cypher.execute("MATCH (h:Hypothesis) delete h")
+
 	def retrieve_list_entities(self):
 		graph = Graph()
 

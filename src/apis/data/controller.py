@@ -191,3 +191,13 @@ def remove_evidence_from_hypothesis():
 	GraphDB().remove_evidence_from_hypothesis(evidence, hypothesis_id)
 	return json.dumps([])
 
+@mod_data.route('/delete-all-evidences')
+def delete_all_evidences():
+	GraphDB().delete_all_evidences()
+	return json.dumps([])
+
+@mod_data.route('/delete-all-hypotheses')
+def delete_all_hypotheses():
+	GraphDB().delete_all_hypotheses()
+	return json.dumps([])
+

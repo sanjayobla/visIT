@@ -28,17 +28,18 @@ function HypothesesFactory($http, $rootScope, EventsFactory, EvidencesFactory){
 	   			datum.threshold = datum.threshold || 10;
 	   			return datum;
 	   		});
-				data = temp;
+			
+			data = temp;
 	   		$rootScope.$emit('hypotheses:retrieveDB', response.data);
 	    });
 	}
 
 	function getData(){
-		console.log("getData called", data);
+		// console.log("getData called", data);
 		return data;
 	}
 
-function addData(n){
+	function addData(n){
 		return $http({
 	    	headers: {'Content-Type': 'application/x-www-form-urlencoded'},
 	    	url: '/data/create-hypothesis',
@@ -49,7 +50,7 @@ function addData(n){
         	n.id = hypothesis_id;
         	n.threshold = 10;
         	data.push(n);
-        	console.log("Node pushed", n);
+        	// console.log("Node pushed", n);
         	EventsFactory.addData(data.length-1, null, 'add', data);
         	$rootScope.$emit('hypothesis:added', n);
         });
@@ -79,7 +80,7 @@ function addData(n){
 		});*/
 	}
 	function addEvidenceTo(hypothesis, evidence, pnnType){
-		console.log(hypothesis, evidence, pnnType);
+		// console.log(hypothesis, evidence, pnnType);
 		if(hypothesis.data.positive.data.indexOf(evidence.title) > -1) return;
 		if(hypothesis.data.neutral.data.indexOf(evidence.title) > -1) return;
 		if(hypothesis.data.negative.data.indexOf(evidence.title) > -1) return;
@@ -145,12 +146,33 @@ function addData(n){
 		// console.log('threshold unchanged')
 	}
 
+	function deleteAll(){
+		return $http.get('/data/delete-all-hypotheses').then(function(response) {
+	   		data.length = 0
+	   		$rootScope.$emit('hypotheses:retrieveDB', data);
+	    });
+	}
+
+	$rootScope.$on('evidencesDeleted', function(event, args){
+		for(var index in data){
+			var hypothesis = data[index];
+			hypothesis.data.positive.data.length = 0;
+			hypothesis.data.negative.data.length = 0;
+			hypothesis.data.neutral.data.length = 0;
+			hypothesis.count = 0;
+			hypothesis.overallWeights[0] = 0;
+			hypothesis.overallWeights[1] = 0;
+			hypothesis.overallWeights[2] = 0;
+		}
+	});
+
 	var factory = {
 		getData: getData,
 		addData: addData,
 		addEvidenceTo: addEvidenceTo,
 		removeEvidenceFrom:removeEvidenceFrom,
-		changeThresholdOf:changeThresholdOf
+		changeThresholdOf:changeThresholdOf,
+		deleteAll: deleteAll
 	};
 
 	return factory;

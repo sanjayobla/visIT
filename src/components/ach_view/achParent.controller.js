@@ -64,7 +64,7 @@ function achParentCtrl($scope, $rootScope, HypothesesFactory, EvidencesFactory, 
 
 	$scope.addEntity = function(){
 		if (noName()) return;
-		console.log("ADD Entity");
+		// console.log("ADD Entity");
 		var args = {
 		name: $scope.objectName,
 		type: 'label-danger'
@@ -72,6 +72,14 @@ function achParentCtrl($scope, $rootScope, HypothesesFactory, EvidencesFactory, 
 		EntityFactory.addData(args);
 		$scope.objectName = "";
 		// $rootScope.$emit('addHypothesisBox', args);
+	}
+
+	$scope.deleteHypotheses = function(){
+		HypothesesFactory.deleteAll();
+	}
+
+	$scope.deleteEvidences = function(){
+		EvidencesFactory.deleteAll();
 	}
 }
 

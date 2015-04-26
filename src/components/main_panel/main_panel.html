@@ -12,25 +12,35 @@
                     <div class="panel-body">
                         <tabset>
                             <tab heading="ACH Browser" ng-controller="achParentCtrl as achParent">
-                                <div class="btn-group add" dropdown="">
-                                    <button type="button" class="btn btn-primary dropdown-toggle" dropdown-toggle="" aria-haspopup="true" aria-expanded="false">
-                                        Add <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li ng-click="addHypothesisBox()"><a href="">Hypothesis</a></li>
-                                        <li ng-click="addEvidenceBox()"><a href="">Evidence</a></li>
-                                    </ul>
-                                </div>
-                                <div class="btn-group zoom-controls">
-                                    <button ng-click="zoomIn()" class="btn btn-success btn-small" type="button"><i class="fa fa-plus"></i></button>
-                                    <button ng-click="resetZoom()"type="button" class="btn btn-warning btn-small">Reset</button>
-                                    <button ng-click="zoomOut()" class="btn btn-danger btn-small" type="button"><i class="fa fa-minus"></i></button>
-                                </div>
-                                <form class="ach-search">
-                                    <div class="form-group">
+                                <form class="form-inline" style="position: absolute; z-index: 100; top: 35px; right: 40px;">
+                                    <div class="btn-group pull-right" dropdown="" style="padding-right: 10px">
+                                        <button type="button" class="btn btn-primary dropdown-toggle" dropdown-toggle="" aria-haspopup="true" aria-expanded="false">
+                                            Delete All <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li ng-click="deleteHypotheses()"><a href="">Hypotheses</a></li>
+                                            <li ng-click="deleteEvidences()"><a href="">Evidences</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="btn-group pull-right" dropdown="" style="padding-right: 10px">
+                                        <button type="button" class="btn btn-primary dropdown-toggle" dropdown-toggle="" aria-haspopup="true" aria-expanded="false">
+                                            Add <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li ng-click="addHypothesisBox()"><a href="">Hypothesis</a></li>
+                                            <li ng-click="addEvidenceBox()"><a href="">Evidence</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="form-group pull-right" style="padding-right: 10px">
                                         <input type="text" ng-model="objectName" placeholder="Evidence/Hypothesis Name" class="form-control" name="ach-search">
                                     </div>
-                                </form>
+
+                                    <div class="btn-group pull-right" style="padding-right: 10px">
+                                        <button ng-click="zoomIn()" class="btn btn-success btn-small" type="button"><i class="fa fa-plus"></i></button>
+                                        <button ng-click="resetZoom()"type="button" class="btn btn-warning btn-small">Reset</button>
+                                        <button ng-click="zoomOut()" class="btn btn-danger btn-small" type="button"><i class="fa fa-minus"></i></button>
+                                    </div> 
+                                </form>                   
                                 <div infinite-canvas id="container" ng-include="'components/main_panel/evidence_browser.html'"></div>
                             </tab>
                             <tab heading="Provenance Timeline" ng-controller="timelineCtrl">
